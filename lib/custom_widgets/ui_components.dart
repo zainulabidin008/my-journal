@@ -20,8 +20,12 @@ Widget getHorizentalSpace(double width) {
 }
 
 Widget customButton(
-    {String? title, double? horizentalPadding, double? verticalPadding,Callback? onTap}) {
-  return GestureDetector(onTap: onTap,
+    {String? title,
+    double? horizentalPadding,
+    double? verticalPadding,
+    Callback? onTap}) {
+  return GestureDetector(
+    onTap: onTap,
     child: Container(
       padding: EdgeInsets.symmetric(
           horizontal: horizentalPadding ?? 15.8.h,
@@ -47,21 +51,21 @@ Widget customButton(
 }
 
 Widget customTextFormField(
-    TextEditingController? controller,
-    String? hintText, {
-      TextInputType? keyboardType,
-      Widget? prefixIcon,
-      Widget? svg,
-      ValueChanged<String>? onChanged,
-      Icon? icon,
-      Widget? suffixIcon,
-      Color? iconColor,
-      String? labelText,
-      TextStyle? labelStyle,
-      required bool isObscure,
-      EdgeInsetsDirectional? contentPadding,
-      Color? hintTextColor,
-    }) {
+  TextEditingController? controller,
+  String? hintText, {
+  TextInputType? keyboardType,
+  Widget? prefixIcon,
+  Widget? svg,
+  ValueChanged<String>? onChanged,
+  Icon? icon,
+  Widget? suffixIcon,
+  Color? iconColor,
+  String? labelText,
+  TextStyle? labelStyle,
+  required bool isObscure,
+  EdgeInsetsDirectional? contentPadding,
+  Color? hintTextColor,
+}) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 1.2.h),
     alignment: Alignment.centerLeft,
@@ -89,7 +93,6 @@ Widget customTextFormField(
             child: prefixIcon,
           ),
         ),
-
         getHorizentalSpace(.4.h),
         Container(
           width: 6.px, // Set desired width
@@ -99,9 +102,8 @@ Widget customTextFormField(
             scale: 1, // Adjust the scale as needed
             child: svg,
           ),
-        ),        getHorizentalSpace(.4.h),
-
-
+        ),
+        getHorizentalSpace(.4.h),
         Expanded(
           child: TextFormField(
             onChanged: onChanged,
@@ -109,15 +111,17 @@ Widget customTextFormField(
             obscureText: isObscure,
             controller: controller,
             style: TextStyle(fontSize: 12.px, color: Colors.black),
-            cursorColor: Colors.black, // Assuming AppColors.primaryColor is blue
+            cursorColor:
+                Colors.black, // Assuming AppColors.primaryColor is blue
             textAlign: TextAlign.left,
             keyboardType: keyboardType,
             decoration: InputDecoration(
-              contentPadding: contentPadding ?? EdgeInsets.symmetric(vertical: 1.5.h),
+              contentPadding:
+                  contentPadding ?? EdgeInsets.symmetric(vertical: 1.5.h),
               isCollapsed: true,
               border: InputBorder.none,
               fillColor: Colors.white,
-              suffixIcon:  Container(
+              suffixIcon: Container(
                 width: 6.px, // Set desired width
                 height: 26.px, // Set desired height
                 alignment: Alignment.center,
@@ -127,7 +131,8 @@ Widget customTextFormField(
                 ),
               ),
               hintText: hintText,
-              hintStyle: TextStyle(color: hintTextColor ?? Colors.grey, fontSize: 12.px),
+              hintStyle: TextStyle(
+                  color: hintTextColor ?? Colors.grey, fontSize: 12.px),
               labelText: labelText,
               labelStyle: labelStyle,
             ),
@@ -138,3 +143,47 @@ Widget customTextFormField(
   );
 }
 
+class CustomNextButton extends StatelessWidget {
+  final String title;
+  final VoidCallback onTap;
+  const CustomNextButton({super.key, required this.title, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 44.px,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.h),
+          color: AppColors.deepBlack,
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: AppTextStyles.buttonTextStyle,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+customScaffoldMessenger(
+  BuildContext context,
+  String text,
+) {
+  return ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        text,
+        style: TextStyle(
+          fontFamily: 'medium',
+          fontSize: 14.sp,
+        ),
+      ),
+      backgroundColor: AppColors.deepBlack,
+      duration: const Duration(seconds: 2),
+    ),
+  );
+}

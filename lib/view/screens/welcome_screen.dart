@@ -23,15 +23,16 @@ class WelcomeScreen extends StatelessWidget {
                 'assets/svgs/welcomeicon.svg',
                 fit: BoxFit.cover,
               )),
-          getVerticalSpace(17.8.h),
+          getVerticalSpace(16.8.h),
           customButton(
               title: "Create new account",
               horizentalPadding: 11.h,
               onTap: () {}),
           getVerticalSpace(1.4.h),
-          GestureDetector(onTap: (){
-            Get.offAll(()=>const LoginScreen());
-          },
+          GestureDetector(
+            onTap: () {
+              Get.offAll(() => const LoginScreen());
+            },
             child: Text(
               'Already have account?',
               style: AppTextStyles.simpleSmallText

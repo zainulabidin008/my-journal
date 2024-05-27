@@ -37,48 +37,59 @@ class LoginScreen extends StatelessWidget {
                     svg: SvgPicture.asset('assets/svgs/lineicon.svg')),
                 getVerticalSpace(2.h),
                 customTextFormField(passwordController, 'Password',
-                    prefixIcon: SvgPicture.asset('assets/svgs/passwordicon.svg'),
+                    prefixIcon:
+                        SvgPicture.asset('assets/svgs/passwordicon.svg'),
                     isObscure: false,
                     svg: SvgPicture.asset('assets/svgs/lineicon.svg')),
                 getVerticalSpace(.8.h),
-               GestureDetector(onTap: () {
-                 Get.to(()=>const ForgetPassword());
-
-               },
-                 child: Align(alignment: Alignment.centerRight,
-                   child: Text(
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => const ForgetPassword());
+                  },
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
                       'Forgot password?',
-                      style: AppTextStyles.simpleSmallText
-                          .copyWith(fontSize: 12.px, fontWeight: FontWeight.w600,color: const Color(0xff181919)),
+                      style: AppTextStyles.simpleSmallText.copyWith(
+                          fontSize: 12.px,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff181919)),
                     ),
-                 ),
-               ),
+                  ),
+                ),
                 getVerticalSpace(6.6.h),
                 customButton(
-                horizentalPadding: 18.h,
-                    title: "Login",
-                    onTap: (){
-        
-                    }
-                ),
+                    horizentalPadding: 16.h, title: "Login", onTap: () {}),
                 getVerticalSpace(1.6.h),
-                RichText(text: TextSpan(children: [
-                  TextSpan(text: 'Don’t have an account? ',style: AppTextStyles.simpleSmallText.copyWith(fontSize: 14.px,color: const Color(0xff444545)),),
-                  TextSpan(text: 'Sign Up',style: AppTextStyles.boldStyle.copyWith(fontSize: 14.px),),
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Don’t have an account? ',
+                    style: AppTextStyles.simpleSmallText.copyWith(
+                        fontSize: 14.px, color: const Color(0xff444545)),
+                  ),
+                  TextSpan(
+                    text: 'Sign Up',
+                    style: AppTextStyles.boldStyle.copyWith(fontSize: 14.px),
+                  ),
                 ])),
                 getVerticalSpace(4.4.h),
-                Text('Login with',style: AppTextStyles.simpleSmallText.copyWith(fontSize: 14.px,color: const Color(0xff444545)),),
+                Text(
+                  'Login with',
+                  style: AppTextStyles.simpleSmallText.copyWith(
+                      fontSize: 14.px, color: const Color(0xff444545)),
+                ),
                 getVerticalSpace(2.h),
-                Row(mainAxisAlignment: MainAxisAlignment.center,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                  SvgPicture.asset('assets/svgs/google.svg'),
-                  getHorizentalSpace(1.6.h),
-                  SvgPicture.asset('assets/svgs/facebook.svg'),
-                  getHorizentalSpace(1.6.h),
-
-                  SvgPicture.asset('assets/svgs/apple.svg'),
-                ],)
-
+                    SvgPicture.asset('assets/svgs/google.svg'),
+                    getHorizentalSpace(1.6.h),
+                    SvgPicture.asset('assets/svgs/facebook.svg'),
+                    getHorizentalSpace(1.6.h),
+                    SvgPicture.asset('assets/svgs/apple.svg'),
+                  ],
+                )
               ],
             ),
           ),
