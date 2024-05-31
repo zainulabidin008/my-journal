@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -185,5 +186,26 @@ customScaffoldMessenger(
       backgroundColor: AppColors.deepBlack,
       duration: const Duration(seconds: 2),
     ),
+  );
+}
+
+choosePlanCustomWidget(
+  String svg,
+  String title,
+) {
+  return Row(
+    children: [
+      SvgPicture.asset(svg),
+      getHorizentalSpace(5.px),
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: 16.px,
+          fontFamily: 'regular',
+          fontWeight: FontWeight.w400,
+          color: AppColors.blackColor,
+        ),
+      ),
+    ],
   );
 }

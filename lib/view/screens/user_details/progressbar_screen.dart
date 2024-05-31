@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_journel/view/screens/user_details/pushor_notpush_screen.dart';
 import 'package:my_journel/view/screens/user_details/select_gender_screen.dart';
+import 'package:my_journel/view/screens/user_details/statement_below_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'age_screen.dart';
+import 'daily_time_screen.dart';
+import 'elevate_area_screen.dart';
 import 'goals_screen.dart';
+import 'motivation_screen.dart';
 
 class ProgressBarScreen extends StatefulWidget {
   const ProgressBarScreen({super.key});
@@ -21,11 +26,11 @@ class _ProgressBarScreenState extends State<ProgressBarScreen> {
     SelectGenderScreen(),
     AgeScreen(),
     GoalsScreen(),
-    Screen4(),
-    Screen5(),
-    Screen6(),
-    Screen7(),
-    Screen8(),
+    ElevateAreaScreen(),
+    DailyTimeScreen(),
+    MotivationScreen(),
+    PushOrNotPushScreen(),
+    StatementBelowScreen(),
   ];
 
   @override
@@ -142,89 +147,5 @@ class ProgressBarScreenController extends GetxController {
         curve: Curves.easeInOut,
       );
     }
-  }
-}
-
-class Screen2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Screen 2',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Screen3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Screen 3',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Screen4 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Screen 4',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Screen5 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Screen 5',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Screen6 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Screen 6',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Screen7 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Screen 7',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Screen8 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Screen 8',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
   }
 }

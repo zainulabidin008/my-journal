@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,32 +9,30 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../custom_widgets/ui_components.dart';
 
-class GoalsScreen extends StatelessWidget {
+class MotivationScreen extends StatelessWidget {
+  MotivationScreen({super.key});
+
   final ProgressBarScreenController progressBarScreenController =
       Get.put(ProgressBarScreenController());
 
-  GoalsScreen({super.key});
   RxList svg = [
-    'assets/svgs/close knit family.svg',
-    'assets/svgs/achieve-life-balance.svg',
-    'assets/svgs/successful career.svg',
-    'assets/svgs/Become confident.svg',
-    'assets/svgs/Increase Productivity.svg',
-    'assets/svgs/Self employee.svg',
+    'assets/svgs/motivation_svgs/after monitoring cofee.svg',
+    'assets/svgs/motivation_svgs/while commuting.svg',
+    'assets/svgs/motivation_svgs/during my lunch break.svg',
+    'assets/svgs/motivation_svgs/before going to sleep.svg',
+    'assets/svgs/motivation_svgs/any spare time.svg',
   ].obs;
 
-  RxList goals = [
-    'Built a close-knit family',
-    'Achieve  life balance',
-    'Have a successful career',
-    'Become confident',
-    'Increase Productivity',
-    'Self employee',
+  RxList motivateText = [
+    'After monitoring coffee',
+    'While commuting',
+    'During my lunch break',
+    'Before going to sleep',
+    'Any spare time',
   ].obs;
 
-  RxList selectedGoals = [].obs;
+  RxInt selectedIndex = 0.obs;
 
-  // RxInt selectedIndex = 0.obs;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,14 +42,9 @@ class GoalsScreen extends StatelessWidget {
           children: [
             SizedBox(height: 5.h),
             Text(
-              'What are your goals?',
-              style: AppTextStyles.heading,
-            ),
-            SizedBox(height: 4.px),
-            Text(
+              'When do you like to find most motivation?',
               textAlign: TextAlign.center,
-              'Choose up to 3 goals for more precise personalization',
-              style: AppTextStyles.regularStyle,
+              style: AppTextStyles.heading,
             ),
             SizedBox(height: 4.h),
             GridView.builder(
@@ -61,20 +55,16 @@ class GoalsScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10.0,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: 1.0, // Aspect ratio of each grid item
+                childAspectRatio: 1.0,
               ),
               itemBuilder: (context, index) {
                 return Obx(
                   () => GestureDetector(
                     onTap: () {
-                      if (selectedGoals.contains(goals[index])) {
-                        selectedGoals.remove(goals[index]);
-                      } else {
-                        if (selectedGoals.length < 3) {
-                          selectedGoals.add(goals[index]);
-                        }
+                      selectedIndex.value = index;
+                      if (kDebugMode) {
+                        print(motivateText[selectedIndex.value]);
                       }
-                      print(selectedGoals.join(', '));
                     },
                     child: Column(
                       children: [
@@ -86,7 +76,7 @@ class GoalsScreen extends StatelessWidget {
                               color: Colors.white,
                               border: Border.all(
                                 width: 2.px,
-                                color: selectedGoals.contains(goals[index])
+                                color: selectedIndex.value == index
                                     ? Colors.black
                                     : Colors.transparent,
                               )),
@@ -98,7 +88,7 @@ class GoalsScreen extends StatelessWidget {
                         SizedBox(height: 0.5.h),
                         Expanded(
                           child: Text(
-                            goals[index],
+                            motivateText[index],
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -112,12 +102,7 @@ class GoalsScreen extends StatelessWidget {
             CustomNextButton(
               title: 'Next',
               onTap: () {
-                if (selectedGoals.length < 3) {
-                  customScaffoldMessenger(
-                      context, 'please select minimum three goals');
-                } else if (selectedGoals.length >= 3) {
-                  progressBarScreenController.nextScreen();
-                }
+                progressBarScreenController.nextScreen();
               },
             ),
           ],

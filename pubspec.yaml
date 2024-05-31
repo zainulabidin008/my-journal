@@ -40,6 +40,9 @@ dependencies:
   flutter_svg: ^2.0.10+1
   intl: ^0.19.0
   flutter_otp_text_field: ^1.1.3+2
+  flutter_staggered_grid_view: ^0.7.0
+  animated_bottom_navigation_bar: ^1.3.3
+  curved_navigation_bar: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +70,11 @@ flutter:
   assets:
     - assets/svgs/
     - assets/pngs/
+    - assets/svgs/motivation_svgs/
+    - assets/svgs/home_screen/
+    - assets/svgs/faces/
+    - assets/svgs/some_what_bad_svgs/
+    - assets/svgs/feelings_svgs/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
