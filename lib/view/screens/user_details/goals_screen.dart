@@ -112,10 +112,10 @@ class GoalsScreen extends StatelessWidget {
             CustomNextButton(
               title: 'Next',
               onTap: () {
-                if (selectedGoals.length < 3) {
+                if (selectedGoals.length < 1) {
                   customScaffoldMessenger(
-                      context, 'please select minimum three goals');
-                } else if (selectedGoals.length >= 3) {
+                      context, 'please select minimum 1 goals');
+                } else if (selectedGoals.length >= 1) {
                   progressBarScreenController.nextScreen();
                 }
               },

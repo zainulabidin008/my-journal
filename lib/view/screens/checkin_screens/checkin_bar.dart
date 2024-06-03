@@ -11,6 +11,7 @@ import '../user_details/goals_screen.dart';
 import '../user_details/progressbar_screen.dart';
 import 'day_screen.dart';
 import 'feel_about_screen.dart';
+import 'goals_tomorrow.dart';
 
 class CheckInBar extends StatefulWidget {
   const CheckInBar({super.key});
@@ -29,7 +30,7 @@ class _CheckInBarState extends State<CheckInBar> {
     EveningBadScreen(),
     FeelAboutScreen(),
     SetGoalsScreen(),
-    DailyTimeScreen(),
+    GoalsForTomorrowScreen(),
   ];
 
   @override

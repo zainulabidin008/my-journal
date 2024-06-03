@@ -28,6 +28,7 @@ Widget customButton(
   return GestureDetector(
     onTap: onTap,
     child: Container(
+      height: 5.h,
       padding: EdgeInsets.symmetric(
           horizontal: horizentalPadding ?? 15.8.h,
           vertical: verticalPadding ?? 1.1.h),

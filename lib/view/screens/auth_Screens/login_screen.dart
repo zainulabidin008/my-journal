@@ -1,9 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:my_journel/view/screens/auth_Screens/forgetpassword.dart';
+import 'package:my_journel/view/screens/auth_Screens/signup_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -69,6 +71,12 @@ class LoginScreen extends StatelessWidget {
                   ),
                   TextSpan(
                     text: 'Sign Up',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Get.to(
+                          () => SignupScreen(),
+                        );
+                      },
                     style: AppTextStyles.boldStyle.copyWith(fontSize: 14.px),
                   ),
                 ])),

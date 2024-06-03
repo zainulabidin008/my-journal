@@ -5,6 +5,7 @@ import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../custom_widgets/ui_components.dart';
+import '../auth_Screens/signup_screen.dart';
 import '../buy_now_screen.dart';
 
 class StatementBelowScreen extends StatelessWidget {
@@ -204,7 +205,9 @@ class StatementBelowScreen extends StatelessWidget {
             CustomNextButton(
               title: 'Next',
               onTap: () {
-                Get.to(() => BuyNowScreen());
+                Get.to(
+                  () => SignupScreen(),
+                );
               },
             ),
           ],

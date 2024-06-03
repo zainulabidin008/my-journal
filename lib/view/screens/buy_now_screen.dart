@@ -173,7 +173,7 @@ class BuyNowScreen extends StatelessWidget {
               CustomNextButton(
                 title: 'Buy Now',
                 onTap: () {
-                  Get.to(CaretakerBottomNavigationScreen());
+                  Get.to(MyBottomBar());
                 },
               ),
             ],
