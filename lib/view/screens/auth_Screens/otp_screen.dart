@@ -6,11 +6,23 @@ import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../controllers/getx_controller/auth_controller.dart';
 import 'createNew_Password.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});
 
+  @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
+  late AuthController signUpController;
+  @override
+  void initState(){
+    super.initState();
+    signUpController=Get.put(AuthController(context),);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

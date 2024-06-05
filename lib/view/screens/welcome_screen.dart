@@ -5,6 +5,7 @@ import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:my_journel/view/screens/auth_Screens/login_screen.dart';
+import 'package:my_journel/view/screens/auth_Screens/signup_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -26,7 +27,9 @@ class WelcomeScreen extends StatelessWidget {
           customButton(
               title: "Create new account",
               horizentalPadding: 11.h,
-              onTap: () {}),
+              onTap: () {
+                Get.offAll(()=>SignupScreen());
+              }),
           getVerticalSpace(1.4.h),
           GestureDetector(
             onTap: () {

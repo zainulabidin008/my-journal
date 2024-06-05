@@ -165,7 +165,7 @@ class LineChartSample2 extends StatelessWidget {
       aspectRatio: 1.90,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: LineChart(
+        child:LineChart(
           LineChartData(
             gridData: FlGridData(show: true),
             titlesData: FlTitlesData(
