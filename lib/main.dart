@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:my_journel/controllers/utils/shared_preferences.dart';
 import 'package:my_journel/view/bottombar.dart';
 import 'package:my_journel/view/screens/buy_now_screen.dart';
 import 'package:my_journel/view/screens/splash_screen.dart';
@@ -8,6 +9,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'controllers/utils/app_colors.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MySharedPreferences.init();
   runApp(const MyApp());
 }
 

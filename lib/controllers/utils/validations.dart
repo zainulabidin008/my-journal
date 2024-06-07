@@ -59,4 +59,18 @@ static String loginHandleError({
     return "";
   }
 }
+
+//login validation
+  static String resetPasswordHandleError({
+    emailController,
+  }){
+    if(emailController.text.isEmpty){
+      return "Email not be Empty".tr;
+    }else if(!isValidEmail.hasMatch(emailController.text)){
+      return "Please check your email".tr;
+    }else{
+      return "";
+    }
+  }
+
 }

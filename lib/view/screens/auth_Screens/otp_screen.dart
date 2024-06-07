@@ -5,23 +5,24 @@ import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../controllers/getx_controller/auth_controller.dart';
-import 'createNew_Password.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final String email;
+  final String type;
+  const OtpScreen({super.key, required this.email, required this.type});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  late AuthController signUpController;
+  late AuthController emailVerifyController;
+  String otp="";
   @override
   void initState(){
     super.initState();
-    signUpController=Get.put(AuthController(context),);
+    emailVerifyController=Get.put(AuthController(context),);
   }
   @override
   Widget build(BuildContext context) {
@@ -59,16 +60,32 @@ class _OtpScreenState extends State<OtpScreen> {
               cursorColor: AppColors.blackColor,
               fieldWidth: 6.3.h,
               fieldHeight: 6.3.h,
-
+              onSubmit: (code){
+              otp=code;
+              },
             ),
             getVerticalSpace(5.1.h),
-            customButton(
-                horizentalPadding: 7.7.h,
-                verticalPadding: .8.h,
-                title: "Next",
-                onTap: () {
-                  Get.to(()=>const CreateNewPassword());
-                }),
+           Obx(() =>  emailVerifyController.isLoading.value?Center(child: CircularProgressIndicator(backgroundColor: AppColors.blackColor,),):
+           customButton(
+               horizentalPadding: 7.7.h,
+               verticalPadding: .8.h,
+               title: "Next",
+               onTap: () {
+                 if(otp.length ==4 ){
+                   emailVerifyController.verifyEmailOtp(otp,widget.type);
+                 }else {
+                   Get.snackbar(
+                     backgroundColor: AppColors.blackColor,
+                     colorText: AppColors.whiteColor,
+                     "Error",
+                     "Please enter the 4-digit OTP",
+                   );
+                 }
+                 // emailVerifyController.verifyEmail(
+                 //
+                 // )
+
+               })),
             getVerticalSpace(2.5.h),
             Text("Didn't receive?",style: AppTextStyles.simpleSmallText,),
             getVerticalSpace(.4.h),

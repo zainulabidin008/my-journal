@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,13 +6,10 @@ import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:my_journel/view/screens/auth_Screens/login_screen.dart';
-import 'package:my_journel/view/screens/auth_Screens/otp_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../controllers/getx_controller/auth_controller.dart';
 import '../../../controllers/utils/validations.dart';
-import '../buy_now_screen.dart';
-import '../user_details/progressbar_screen.dart';
+
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
@@ -24,6 +19,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+
   late AuthController signUpController;
   @override
   void initState(){
@@ -116,7 +112,8 @@ class _SignupScreenState extends State<SignupScreen> {
                          emailController.text.trim(),
                          passwordController.text.trim(),
                        );
-                       Get.to(() => const OtpScreen());
+                       // String userEmail = emailController.text.trim();
+                       // Get.to(() =>  OtpScreen(email:userEmail ,));
                      }else {
                        Get.snackbar(backgroundColor: AppColors.blackColor,
                            colorText: AppColors.whiteColor,
