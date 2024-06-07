@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
+import 'package:my_journel/view/bottombar.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../custom_widgets/ui_components.dart';
 import '../auth_Screens/signup_screen.dart';
@@ -206,7 +207,7 @@ class StatementBelowScreen extends StatelessWidget {
               title: 'Next',
               onTap: () {
                 Get.to(
-                  () => SignupScreen(),
+                  () => MyBottomBar(),
                 );
               },
             ),

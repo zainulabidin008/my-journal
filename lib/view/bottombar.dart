@@ -2,17 +2,12 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:my_journel/controllers/utils/app_styles.dart';
-import 'package:my_journel/custom_widgets/ui_components.dart';
-import 'package:my_journel/view/screens/checkin_screens/checkin_bar.dart';
 import 'package:my_journel/view/screens/home_screen.dart';
 import 'package:my_journel/view/screens/setting_screen.dart';
 import 'package:my_journel/view/statistics_screen.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../controllers/utils/app_colors.dart';
 import 'goal_screen.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MyBottomBar extends StatefulWidget {
   MyBottomBar({
@@ -57,7 +52,7 @@ class _MyBottomBarState extends State<MyBottomBar> {
             alignment: Alignment.bottomCenter,
             children: [
               CurvedNavigationBar(
-                height: 9.h,
+                // height: 9.h,
                 color: AppColors.blackColor,
                 backgroundColor: Colors.transparent,
                 buttonBackgroundColor: AppColors.blackColor,
@@ -85,7 +80,7 @@ class _MyBottomBarState extends State<MyBottomBar> {
                 onTap: (index) => onTap(index),
               ),
               Positioned(
-                bottom: 0.5.h,
+                bottom: 0.6.h,
                 left: 0,
                 right: 0,
                 child: Row(
@@ -143,33 +138,6 @@ class _MyBottomBarState extends State<MyBottomBar> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class SearchScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Search Screen'),
-    );
-  }
-}
-
-class NotificationsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Notifications Screen'),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Profile Screen'),
     );
   }
 }

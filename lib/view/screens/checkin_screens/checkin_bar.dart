@@ -3,12 +3,6 @@ import 'package:get/get.dart';
 import 'package:my_journel/view/screens/checkin_screens/set_goals.dart';
 import 'package:my_journel/view/screens/checkin_screens/whatbad_evenining_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../user_details/age_screen.dart';
-import '../user_details/daily_time_screen.dart';
-import '../user_details/elevate_area_screen.dart';
-import '../user_details/goals_screen.dart';
-import '../user_details/progressbar_screen.dart';
 import 'day_screen.dart';
 import 'feel_about_screen.dart';
 import 'goals_tomorrow.dart';
@@ -22,8 +16,7 @@ class CheckInBar extends StatefulWidget {
 
 class _CheckInBarState extends State<CheckInBar> {
   final CheckInProgressBarScreenController checkInProgressBarScreenController =
-      Get.put(CheckInProgressBarScreenController());
-  // final RxInt totalScreens = 5.obs;
+      Get.put(CheckInProgressBarScreenController(), permanent: false);
 
   final List<Widget> screens = [
     DayScreen(),
@@ -37,6 +30,7 @@ class _CheckInBarState extends State<CheckInBar> {
   void initState() {
     super.initState();
     checkInProgressBarScreenController.pageController.addListener(() {
+      if (!mounted) return; // Check if the widget is still mounted
       int newIndex =
           checkInProgressBarScreenController.pageController.page?.round() ??
               checkInProgressBarScreenController.currentIndex.value;
@@ -48,11 +42,11 @@ class _CheckInBarState extends State<CheckInBar> {
     });
   }
 
-  @override
-  void dispose() {
-    checkInProgressBarScreenController.pageController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   checkInProgressBarScreenController.disposeController();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +109,11 @@ class _CheckInBarState extends State<CheckInBar> {
 class CheckInProgressBarScreenController extends GetxController {
   RxInt currentIndex = 0.obs;
   final RxInt checkInTotalScreens = 5.obs;
-  final PageController pageController = PageController();
+  late PageController pageController;
+
+  CheckInProgressBarScreenController() {
+    pageController = PageController();
+  }
 
   void nextScreen() {
     if (currentIndex.value < checkInTotalScreens.value - 1) {
@@ -124,5 +122,9 @@ class CheckInProgressBarScreenController extends GetxController {
         curve: Curves.easeInOut,
       );
     }
+  }
+
+  void disposeController() {
+    pageController.dispose();
   }
 }

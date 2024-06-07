@@ -39,7 +39,7 @@ class StatisticsScreen extends StatelessWidget {
         ),
         // getVerticalSpace(5.h),
         Padding(
-          padding: EdgeInsets.all(5.h),
+          padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 3.h),
           child: Column(
             children: [
               Row(
@@ -73,7 +73,7 @@ class StatisticsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              getVerticalSpace(5.h),
+              getVerticalSpace(3.h),
               Text(
                 'Statistic Goals',
                 style: TextStyle(
@@ -83,14 +83,17 @@ class StatisticsScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              getVerticalSpace(5.h),
+              getVerticalSpace(3.h),
               Container(
-                height: 200,
+                // height: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16.px),
                   color: Colors.white,
                 ),
-                child: Center(child: Expanded(child: LineChartSample2())),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(child: LineChartSample2()),
+                ),
               ),
             ],
           ),
@@ -162,10 +165,10 @@ class LineChartSample2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.90,
+      aspectRatio: 1.50,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child:LineChart(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+        child: LineChart(
           LineChartData(
             gridData: FlGridData(show: true),
             titlesData: FlTitlesData(
@@ -254,8 +257,8 @@ class LineChartSample2 extends StatelessWidget {
                   FlSpot(6, 35),
                 ],
                 isCurved: true,
-                color: AppColors.primaryColor,
-                barWidth: 1,
+                color: AppColors.blackColor,
+                barWidth: 2,
                 belowBarData: BarAreaData(show: false),
                 dotData: FlDotData(show: false),
               ),

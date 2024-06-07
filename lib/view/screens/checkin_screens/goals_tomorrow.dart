@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:my_journel/view/screens/buy_now_screen.dart';
+import 'package:my_journel/view/screens/checkin_screens/checkin_bar.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../controllers/utils/app_colors.dart';
@@ -9,7 +12,9 @@ import '../../../custom_widgets/ui_components.dart';
 import '../../bottombar.dart';
 
 class GoalsForTomorrowScreen extends StatelessWidget {
-  const GoalsForTomorrowScreen({super.key});
+  GoalsForTomorrowScreen({super.key});
+  CheckInProgressBarScreenController checkInProgressBarScreenController =
+      Get.put(CheckInProgressBarScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +55,8 @@ class GoalsForTomorrowScreen extends StatelessWidget {
           CustomNextButton(
             title: 'Next',
             onTap: () {
-              Get.to(() => MyBottomBar());
+              Get.to(() => BuyNowScreen());
+              // checkInProgressBarScreenController.disposeController();
             },
           ),
         ],

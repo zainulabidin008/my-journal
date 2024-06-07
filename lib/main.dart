@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(scaffoldBackgroundColor: AppColors.primaryColor),
-          home: const SplashScreen(),
-          // home: const ProgressBarScreen(),
+          // home: const SplashScreen(),
+          home: MyBottomBar(),
           // home: ScreenManager(),
           // home: CaretakerBottomNavigationScreen(),
         );

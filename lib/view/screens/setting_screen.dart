@@ -43,7 +43,7 @@ class SettingScreen extends StatelessWidget {
         ),
         // getVerticalSpace(5.h),
         Padding(
-          padding: EdgeInsets.all(5.h),
+          padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 3.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
