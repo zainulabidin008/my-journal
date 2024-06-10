@@ -13,8 +13,8 @@ import 'checkin_bar.dart';
 
 class DayScreen extends StatelessWidget {
   DayScreen({super.key});
-  final CheckInProgressBarScreenController checkInProgressBarScreenController =
-      Get.put(CheckInProgressBarScreenController());
+  final CheckInProgressBarController controller =
+      Get.put(CheckInProgressBarController());
 
   RxList faces = [
     'assets/svgs/faces/angry.svg',
@@ -97,7 +97,7 @@ class DayScreen extends StatelessWidget {
           CustomNextButton(
             title: 'Next',
             onTap: () {
-              checkInProgressBarScreenController.nextScreen();
+              controller.nextScreen();
             },
           ),
         ],

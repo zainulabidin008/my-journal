@@ -18,18 +18,20 @@ class WelcomeScreen extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: SvgPicture.asset(
-                'assets/svgs/welcomeicon.svg',
-                fit: BoxFit.cover,
-              )),
+            width: MediaQuery.of(context).size.width,
+            child: SvgPicture.asset(
+              'assets/svgs/welcomeicon.svg',
+              fit: BoxFit.cover,
+            ),
+          ),
           getVerticalSpace(16.8.h),
           customButton(
-              title: "Create new account",
-              horizentalPadding: 11.h,
-              onTap: () {
-                Get.offAll(()=>SignupScreen());
-              }),
+            title: "Create new account",
+            horizentalPadding: 11.h,
+            onTap: () {
+              Get.offAll(() => SignupScreen());
+            },
+          ),
           getVerticalSpace(1.4.h),
           GestureDetector(
             onTap: () {

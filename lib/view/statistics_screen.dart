@@ -177,7 +177,7 @@ class LineChartSample2 extends StatelessWidget {
                   showTitles: true,
                   getTitlesWidget: (value, meta) {
                     TextStyle style = TextStyle(
-                      fontSize: 7,
+                      fontSize: 8,
                       fontFamily: 'regular',
                       color: Color(0xffAEAEAE),
                       fontWeight: FontWeight.bold,
@@ -205,7 +205,7 @@ class LineChartSample2 extends StatelessWidget {
                   showTitles: true,
                   getTitlesWidget: (value, meta) {
                     TextStyle style = TextStyle(
-                      fontSize: 7,
+                      fontSize: 8,
                       fontFamily: 'RegularFont',
                       color: AppColors.blackColor,
                       fontWeight: FontWeight.w500,

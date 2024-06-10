@@ -12,8 +12,8 @@ import 'checkin_bar.dart';
 
 class SetGoalsScreen extends StatelessWidget {
   SetGoalsScreen({super.key});
-  final CheckInProgressBarScreenController checkInProgressBarScreenController =
-      Get.put(CheckInProgressBarScreenController());
+  final CheckInProgressBarController controller =
+      Get.put(CheckInProgressBarController());
   void showCustomDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -228,7 +228,7 @@ class SetGoalsScreen extends StatelessWidget {
               CustomNextButton(
                 title: 'Next',
                 onTap: () {
-                  checkInProgressBarScreenController.nextScreen();
+                  controller.nextScreen();
                 },
               ),
             ],

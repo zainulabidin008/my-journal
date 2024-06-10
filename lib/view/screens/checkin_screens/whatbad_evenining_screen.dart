@@ -11,8 +11,8 @@ import 'checkin_bar.dart';
 
 class EveningBadScreen extends StatelessWidget {
   EveningBadScreen({super.key});
-  final CheckInProgressBarScreenController checkInProgressBarScreenController =
-      Get.put(CheckInProgressBarScreenController());
+  final CheckInProgressBarController controller =
+      Get.put(CheckInProgressBarController());
 
   RxList eveningBad = [
     'assets/svgs/some_what_bad_svgs/layer1.svg',
@@ -173,11 +173,11 @@ class EveningBadScreen extends StatelessWidget {
           CustomNextButton(
             title: 'Next',
             onTap: () {
-              if (selectedEveningBadName.length < 5) {
+              if (selectedEveningBadName.length < 1) {
                 customScaffoldMessenger(
-                    context, 'Please select minimum 5 items');
+                    context, 'Please select minimum 1 items');
               } else {
-                checkInProgressBarScreenController.nextScreen();
+                controller.nextScreen();
               }
             },
           ),

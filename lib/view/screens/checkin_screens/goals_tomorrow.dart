@@ -13,8 +13,8 @@ import '../../bottombar.dart';
 
 class GoalsForTomorrowScreen extends StatelessWidget {
   GoalsForTomorrowScreen({super.key});
-  CheckInProgressBarScreenController checkInProgressBarScreenController =
-      Get.put(CheckInProgressBarScreenController());
+  CheckInProgressBarController controller =
+      Get.put(CheckInProgressBarController());
 
   @override
   Widget build(BuildContext context) {

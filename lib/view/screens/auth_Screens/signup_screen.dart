@@ -7,9 +7,7 @@ import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:my_journel/view/screens/auth_Screens/login_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../controllers/getx_controller/auth_controller.dart';
-import '../../../controllers/utils/validations.dart';
 import '../user_details/progressbar_screen.dart';
 
 class SignupScreen extends StatefulWidget {

@@ -9,8 +9,8 @@ import 'checkin_bar.dart';
 
 class FeelAboutScreen extends StatelessWidget {
   FeelAboutScreen({super.key});
-  final CheckInProgressBarScreenController checkInProgressBarScreenController =
-      Get.put(CheckInProgressBarScreenController());
+  final CheckInProgressBarController controller =
+      Get.put(CheckInProgressBarController());
 
   RxList eveningBad = [
     'assets/svgs/feelings_svgs/Group.svg',
@@ -162,11 +162,11 @@ class FeelAboutScreen extends StatelessWidget {
           CustomNextButton(
             title: 'Next',
             onTap: () {
-              if (selectedEveningBadName.length < 5) {
+              if (selectedEveningBadName.length < 1) {
                 customScaffoldMessenger(
-                    context, 'Please select minimum 5 feelings');
+                    context, 'Please select minimum 1 feeling');
               } else {
-                checkInProgressBarScreenController.nextScreen();
+                controller.nextScreen();
               }
             },
           ),
