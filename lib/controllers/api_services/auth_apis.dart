@@ -5,11 +5,13 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:http/http.dart';
 import 'package:my_journel/controllers/api_services/base_url.dart';
-import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/constants.dart';
 import 'package:my_journel/controllers/utils/shared_preferences.dart';
+import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:my_journel/view/screens/auth_Screens/createNew_Password.dart';
+import 'package:my_journel/view/screens/auth_Screens/login_screen.dart';
 import 'package:my_journel/view/screens/auth_Screens/otp_screen.dart';
+import 'package:my_journel/view/screens/user_details/progressbar_screen.dart';
 
 import '../utils/local_storage_variables.dart';
 
@@ -27,26 +29,33 @@ class AuthApis {
     });
     Response response = await post(url, headers: headers, body: body);
     final responseBody = jsonDecode(response.body);
-    if (responseBody["result"] == true) {
+    if (responseBody["result"] == true &&
+        responseBody["result"] == "Successfully, Register your account.") {
       MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
       log("Login Api Successfully");
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Successfully",
-          "Successfully Login");
+      customScaffoldMessenger(context, 'Successfully Login');
+      Get.off(() => ProgressBarScreen());
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Successfully",
+      //     "Successfully Login");
+    } else if (responseBody["result"] ==
+        "User already registered against this email.") {
+      customScaffoldMessenger(context, 'text');
     } else {
       log("login api failed");
       log(responseBody["message"]);
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Error",
-          responseBody["message"]);
+      customScaffoldMessenger(context, responseBody["message"]);
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Error",
+      //     responseBody["message"]);
     }
   }
 
-//sign up Api
+  //sign up Api
   Future<void> signUpApi(String userName, userEmail, userPassword) async {
     final url = Uri.parse("${BaseUrl.url}/user/auth/register");
     final headers = {"Content-Type": "application/json"};
@@ -59,21 +68,29 @@ class AuthApis {
     final responseBody = jsonDecode(response.body);
     if (responseBody["result"] == true) {
       log("signUp Api register Successfully");
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Successfully",
-          "Successfully SignUp");
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Successfully",
+      //     "Successfully SignUp");
+      customScaffoldMessenger(context, 'Successfully SignUp');
       emailVerifyApi(userEmail);
       MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
+      Get.to(
+        () => OtpScreen(
+          email: userEmail,
+          type: 'email',
+        ),
+      );
     } else {
       log("signUp api failed");
       log(responseBody["message"]);
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Error",
-          responseBody["message"]);
+      customScaffoldMessenger(context, responseBody["message"]);
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Error",
+      //     responseBody["message"]);
     }
   }
 
@@ -93,19 +110,21 @@ class AuthApis {
             type: 'email',
           ));
       log("Successfully Send Email");
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Successfully",
-          "Successfully Send Email");
+      customScaffoldMessenger(context, 'Successfully Send Email');
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Successfully",
+      //     "Successfully Send Email");
     } else {
       log("Incorrect Email");
       log(responseBody["message"]);
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Error",
-          responseBody["message"]);
+      customScaffoldMessenger(context, responseBody["message"]);
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Error",
+      //     responseBody["message"]);
     }
   }
 
@@ -116,7 +135,7 @@ class AuthApis {
     print("User Id$userId");
     final body = jsonEncode({
       "otp": userOtp,
-      "id": userId,
+      "id": MySharedPreferences.getString(userIdKey),
     });
 
     Response response = await post(url, headers: headers, body: body);
@@ -127,20 +146,23 @@ class AuthApis {
       } else if (type == "email") {
         Get.to(() => const CreateNewPassword());
       }
-      log("Otp Successfully");
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Successfully",
-          "Otp Verified Successfully");
+      log("Otp Verify Successfully");
+      Get.off(() => const ProgressBarScreen());
+      customScaffoldMessenger(context, 'Otp Verified Successfully');
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Successfully",
+      //     "Otp Verified Successfully");
     } else {
       log("Incorrect Otp");
       log(responseBody["message"]);
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Error",
-          responseBody["message"]);
+      customScaffoldMessenger(context, responseBody["message"]);
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Error",
+      //     responseBody["message"]);
     }
   }
 
@@ -154,25 +176,101 @@ class AuthApis {
     Response response = await post(url, headers: headers, body: body);
     final responseBody = jsonDecode(response.body);
     if (responseBody["result"] == true) {
-      Get.to(() => OtpScreen(
-            email: userEmail,
-            type: "forgot",
-          ));
+      Get.to(
+          () => OtpScreen(
+                email: userEmail,
+                type: "forgot",
+              ),
+          arguments: {
+            'userEmail': userEmail,
+          });
       log("email Successfully");
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Successfully",
-          "Successfully Send Email");
+      customScaffoldMessenger(context, 'Successfully Send Email');
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Successfully",
+      //     "Successfully Send Email");
       MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
     } else {
       log("Incorrect Email");
       log(responseBody["message"]);
-      Get.snackbar(
-          backgroundColor: AppColors.blackColor,
-          colorText: AppColors.whiteColor,
-          "Error",
-          responseBody["message"]);
+      customScaffoldMessenger(context, responseBody["message"]);
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Error",
+      //     responseBody["message"]);
+    }
+  }
+
+  Future<void> forgotPasswordVerifyOtpApi(String userOtp, String type) async {
+    final url = Uri.parse("${BaseUrl.url}/user/auth/verifyPasswordOtp");
+    final headers = {"Content-Type": "application/json"};
+    print("User Id$userId");
+    final body = jsonEncode({
+      "otp": userOtp,
+      "id": MySharedPreferences.getString(userIdKey),
+    });
+
+    Response response = await post(url, headers: headers, body: body);
+    final responseBody = jsonDecode(response.body);
+    if (responseBody["result"] == true) {
+      // if (type == "forgot") {
+      //   Get.to(() => const CreateNewPassword());
+      // } else if (type == "email") {
+      //   Get.to(() => const CreateNewPassword());
+      // }
+      log("Otp Verify Successfully");
+      Get.off(() => const CreateNewPassword(), arguments: {'otp': userOtp});
+      customScaffoldMessenger(context, 'Otp Verified Successfully');
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Successfully",
+      //     "Otp Verified Successfully");
+    } else {
+      log("Incorrect Otp");
+      log(responseBody["message"]);
+      customScaffoldMessenger(context, responseBody["message"]);
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Error",
+      //     responseBody["message"]);
+    }
+  }
+
+  Future<void> resetPasswordApi(String userOtp, String password) async {
+    final url = Uri.parse(
+        "${BaseUrl.url}/user/auth/newPassword/${MySharedPreferences.getString(userIdKey)}");
+    final headers = {"Content-Type": "application/json"};
+    print("User Id$userId");
+    final body = jsonEncode({
+      "newPassword": password,
+      "otp": userOtp,
+    });
+
+    Response response = await post(url, headers: headers, body: body);
+    final responseBody = jsonDecode(response.body);
+    if (responseBody["result"] == true) {
+      log("Change Password Successfully");
+      customScaffoldMessenger(context, 'Change Password Successfully');
+      Get.off(() => const LoginScreen());
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Successfully",
+      //     "Otp Verified Successfully");
+    } else {
+      log("Incorrect Otp");
+      log(responseBody["message"]);
+      customScaffoldMessenger(context, responseBody["message"]);
+      // Get.snackbar(
+      //     backgroundColor: AppColors.blackColor,
+      //     colorText: AppColors.whiteColor,
+      //     "Error",
+      //     responseBody["message"]);
     }
   }
 }

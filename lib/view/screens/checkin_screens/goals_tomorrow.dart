@@ -13,8 +13,8 @@ import '../../bottombar.dart';
 
 class GoalsForTomorrowScreen extends StatelessWidget {
   GoalsForTomorrowScreen({super.key});
-  CheckInProgressBarController controller =
-      Get.put(CheckInProgressBarController());
+  final CheckInBarController controller = Get.put(CheckInBarController());
+  // final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,8 @@ class GoalsForTomorrowScreen extends StatelessWidget {
           CustomNextButton(
             title: 'Next',
             onTap: () {
-              Get.to(() => BuyNowScreen());
+              // controller.nextScreen();
+              Get.offAll(() => BuyNowScreen());
               // checkInProgressBarScreenController.disposeController();
             },
           ),

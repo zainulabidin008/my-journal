@@ -1,19 +1,112 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../controllers/utils/app_colors.dart';
 import '../../../controllers/utils/app_styles.dart';
 import '../../../custom_widgets/ui_components.dart';
 import 'checkin_bar.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'dart:io';
 
-class SetGoalsScreen extends StatelessWidget {
+class SetGoalsScreen extends StatefulWidget {
   SetGoalsScreen({super.key});
-  final CheckInProgressBarController controller =
-      Get.put(CheckInProgressBarController());
+
+  @override
+  State<SetGoalsScreen> createState() => _SetGoalsScreenState();
+}
+
+class _SetGoalsScreenState extends State<SetGoalsScreen> {
+  final CheckInBarController controller = Get.put(CheckInBarController());
+  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  final FlutterSoundPlayer _player = FlutterSoundPlayer();
+  bool _isRecording = false;
+  bool _isPlaying = false;
+  String _audioPath = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await requestPermissions();
+    await _recorder.openRecorder();
+    await _player.openPlayer();
+  }
+
+  Future<void> _startRecording() async {
+    Directory tempDir = await getTemporaryDirectory();
+    _audioPath = '${tempDir.path}/audio_record.aac';
+
+    await _recorder.startRecorder(
+      toFile: _audioPath,
+      codec: Codec.aacADTS,
+    );
+    setState(() {
+      _isRecording = true;
+    });
+  }
+
+  Future<void> _stopRecording() async {
+    await _recorder.stopRecorder();
+    setState(() {
+      _isRecording = false;
+    });
+    log('Audio recorded and saved to: $_audioPath');
+  }
+
+  Future<void> _playAudio() async {
+    await _player.startPlayer(
+      fromURI: _audioPath,
+      codec: Codec.aacADTS,
+      whenFinished: () {
+        setState(() {
+          _isPlaying = false;
+        });
+      },
+    );
+    setState(() {
+      _isPlaying = true;
+    });
+  }
+
+  Future<void> _stopAudio() async {
+    await _player.stopPlayer();
+    setState(() {
+      _isPlaying = false;
+    });
+  }
+
+  void _handleTap() {
+    if (_isRecording) {
+      _stopRecording();
+    } else if (_isPlaying) {
+      _stopAudio();
+    } else if (_audioPath.isEmpty) {
+      _startRecording();
+    } else {
+      _playAudio();
+    }
+  }
+
+  @override
+  void dispose() {
+    _recorder.closeRecorder();
+    _player.closePlayer();
+    super.dispose();
+  }
+
   void showCustomDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -76,6 +169,7 @@ class SetGoalsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("path: $_audioPath");
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -201,26 +295,38 @@ class SetGoalsScreen extends StatelessWidget {
                 ],
               ),
               getVerticalSpace(1.h),
-              Container(
-                height: 48,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40.px),
-                  color: AppColors.whiteColor,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.px),
-                      child: CircleAvatar(
-                        backgroundColor: AppColors.blackColor,
-                        radius: 20,
-                        child: Center(
-                          child: SvgPicture.asset('assets/svgs/mic.svg'),
+              GestureDetector(
+                onTap: _handleTap,
+                child: Container(
+                  height: 48,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40.px),
+                    color: AppColors.whiteColor,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.px),
+                        child: CircleAvatar(
+                          backgroundColor: AppColors.blackColor,
+                          radius: 20,
+                          child: Center(
+                            child: _isRecording
+                                ? SvgPicture.asset('assets/svgs/mic.svg')
+                                : _isPlaying
+                                    ? Icon(Icons.pause,
+                                        size: 20, color: AppColors.whiteColor)
+                                    : Icon(
+                                        Icons.play_arrow,
+                                        size: 20,
+                                        color: AppColors.whiteColor,
+                                      ),
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               // Spacer(),
@@ -236,5 +342,12 @@ class SetGoalsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<void> requestPermissions() async {
+  var status = await Permission.microphone.status;
+  if (!status.isGranted) {
+    await Permission.microphone.request();
   }
 }

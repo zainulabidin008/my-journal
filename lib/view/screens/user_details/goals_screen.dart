@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
@@ -40,7 +39,6 @@ class GoalsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserDetailController controller =
         Get.put(UserDetailController(context));
-
     controller.userDetails();
     return Scaffold(
       body: Obx(() {

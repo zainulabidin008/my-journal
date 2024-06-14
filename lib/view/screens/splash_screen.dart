@@ -17,10 +17,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds: 5)).then((value){
-      return Get.offAll(()=>const OnBoardScreen1());
+    Future.delayed(const Duration(seconds: 5)).then((value) {
+      return Get.offAll(() => const OnBoardScreen1());
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

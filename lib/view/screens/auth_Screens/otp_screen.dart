@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../controllers/getx_controller/auth_controller.dart';
+import 'createNew_Password.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
@@ -17,15 +19,23 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  late AuthController emailVerifyController;
-  String otp="";
+  late AuthController controller;
+  String otp = "";
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    emailVerifyController=Get.put(AuthController(context),);
+    controller = Get.put(
+      AuthController(context),
+    );
   }
+
   @override
   Widget build(BuildContext context) {
+    // Provide a default value if Get.arguments is null
+    final arguments = Get.arguments ?? {};
+    final userEmail = arguments['userEmail'] ?? widget.email;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -41,7 +51,7 @@ class _OtpScreenState extends State<OtpScreen> {
             ),
             getVerticalSpace(1.6.h),
             Text(
-              "We have just sent you a 4-digit code to \nexample@gmail.com",
+              "We have just sent you a 4-digit code to \n $userEmail",
               style: AppTextStyles.simpleSmallText.copyWith(
                 fontSize: 14.px,
                 color: const Color(0xff2D3748),
@@ -49,10 +59,13 @@ class _OtpScreenState extends State<OtpScreen> {
               textAlign: TextAlign.center,
             ),
             getVerticalSpace(3.6.h),
-            OtpTextField(contentPadding: EdgeInsets.symmetric(horizontal: 1.h,),
+            OtpTextField(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 1.h,
+              ),
               numberOfFields: 4,
               showFieldAsBox: true,
-          filled: true,
+              filled: true,
               fillColor: AppColors.whiteColor,
               focusedBorderColor: const Color(0xff828387),
               enabledBorderColor: Colors.white,
@@ -60,41 +73,66 @@ class _OtpScreenState extends State<OtpScreen> {
               cursorColor: AppColors.blackColor,
               fieldWidth: 6.3.h,
               fieldHeight: 6.3.h,
-              onSubmit: (code){
-              otp=code;
+              onSubmit: (code) {
+                setState(() {
+                  otp = code;
+                });
               },
             ),
             getVerticalSpace(5.1.h),
-           Obx(() =>  emailVerifyController.isLoading.value?Center(child: CircularProgressIndicator(backgroundColor: AppColors.blackColor,),):
-           customButton(
-               horizentalPadding: 7.7.h,
-               verticalPadding: .8.h,
-               title: "Next",
-               onTap: () {
-                 if(otp.length ==4 ){
-                   emailVerifyController.verifyEmailOtp(otp,widget.type);
-                 }else {
-                   Get.snackbar(
-                     backgroundColor: AppColors.blackColor,
-                     colorText: AppColors.whiteColor,
-                     "Error",
-                     "Please enter the 4-digit OTP",
-                   );
-                 }
-                 // emailVerifyController.verifyEmail(
-                 //
-                 // )
-
-               })),
+            Obx(
+              () => controller.isLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.blackColor,
+                      ),
+                    )
+                  : customButton(
+                      horizentalPadding: 7.7.h,
+                      verticalPadding: .8.h,
+                      title: "Next",
+                      onTap: () {
+                        if (otp.length == 4) {
+                          if (widget.type.toString() == "email") {
+                            controller.verifyEmailOtp(otp, widget.type);
+                          } else {
+                            controller.verifyPasswordOtp(otp, widget.type);
+                          }
+                        } else {
+                          customScaffoldMessenger(
+                            context,
+                            'Please enter the 4-digit OTP',
+                          );
+                        }
+                      }),
+            ),
             getVerticalSpace(2.5.h),
-            Text("Didn't receive?",style: AppTextStyles.simpleSmallText,),
-            getVerticalSpace(.4.h),
             Text(
-              'Resend Code',
-              style: AppTextStyles.simpleSmallText.copyWith(
-                  fontSize: 12.px,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xff272828)),
+              "Didn't receive?",
+              style: AppTextStyles.simpleSmallText,
+            ),
+            getVerticalSpace(.4.h),
+            Obx(
+              () => controller.resendIsLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(
+                          color: AppColors.blackColor))
+                  : GestureDetector(
+                      onTap: () {
+                        if (widget.type.toString() == "email") {
+                          controller.verifyEmail(userEmail);
+                        } else {
+                          controller.forgotPassword(userEmail);
+                        }
+                      },
+                      child: Text(
+                        'Resend Code',
+                        style: AppTextStyles.simpleSmallText.copyWith(
+                            fontSize: 12.px,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff272828)),
+                      ),
+                    ),
             ),
           ],
         ),

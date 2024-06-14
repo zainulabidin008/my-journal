@@ -1,21 +1,49 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
+import 'package:my_journel/controllers/utils/validations.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../user_details/progressbar_screen.dart';
+import '../../../controllers/getx_controller/auth_controller.dart';
+import '../../../controllers/utils/constants.dart';
+import '../../../controllers/utils/shared_preferences.dart';
 
-class CreateNewPassword extends StatelessWidget {
+class CreateNewPassword extends StatefulWidget {
   const CreateNewPassword({super.key});
 
   @override
+  State<CreateNewPassword> createState() => _CreateNewPasswordState();
+}
+
+class _CreateNewPasswordState extends State<CreateNewPassword> {
+  late AuthController resetPasswordController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    resetPasswordController = Get.put(
+      AuthController(context),
+    );
+  }
+
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
+    final arguments = Get.arguments as Map<String, dynamic>;
+    final otp = arguments['otp'] ?? "";
+    log('otp: $otp');
+    log('id: ${MySharedPreferences.getString(userIdKey)}');
     RxBool isVisible = false.obs;
     RxBool isVisible1 = false.obs;
-    final TextEditingController oldPasswordController = TextEditingController();
-    final TextEditingController newPasswordController = TextEditingController();
     return Scaffold(
       body: Obx(
         () => Container(
@@ -41,7 +69,7 @@ class CreateNewPassword extends StatelessWidget {
               ),
               getVerticalSpace(4.2.h),
               customTextFormField(
-                oldPasswordController,
+                passwordController,
                 'Password',
                 prefixIcon: SvgPicture.asset('assets/svgs/passwordicon.svg'),
                 isObscure: isVisible1.value == true ? false : true,
@@ -63,7 +91,7 @@ class CreateNewPassword extends StatelessWidget {
               ),
               getVerticalSpace(1.2.h),
               customTextFormField(
-                newPasswordController,
+                confirmPasswordController,
                 'Confirm Password',
                 prefixIcon: SvgPicture.asset('assets/svgs/passwordicon.svg'),
                 isObscure: isVisible.value == true ? false : true,
@@ -85,13 +113,34 @@ class CreateNewPassword extends StatelessWidget {
                     )),
               ),
               getVerticalSpace(5.1.h),
-              customButton(
-                  horizentalPadding: 7.7.h,
-                  verticalPadding: .8.h,
-                  title: "Save",
-                  onTap: () {
-                    Get.to(() => const ProgressBarScreen());
-                  }),
+              resetPasswordController.isLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(
+                          color: AppColors.blackColor))
+                  : customButton(
+                      horizentalPadding: 7.7.h,
+                      verticalPadding: .8.h,
+                      title: "Save",
+                      onTap: () {
+                        if (Validations.resetAndConfirmPasswordHandleError(
+                          passwordController: passwordController,
+                          confirmPasswordController: confirmPasswordController,
+                        ).isNotEmpty) {
+                          customScaffoldMessenger(
+                              context,
+                              Validations.resetAndConfirmPasswordHandleError(
+                                passwordController: passwordController,
+                                confirmPasswordController:
+                                    confirmPasswordController,
+                              ));
+                        } else {
+                          resetPasswordController.resetPasswordApi(
+                            otp,
+                            confirmPasswordController.text.trim(),
+                          );
+                        }
+                        // Get.to(() => const ProgressBarScreen());
+                      }),
             ],
           ),
         ),

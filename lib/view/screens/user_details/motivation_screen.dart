@@ -56,7 +56,7 @@ class MotivationScreen extends StatelessWidget {
             child: Text("No data available"),
           );
         }
-        return SafeArea(
+        return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 2.h),
             child: Column(
@@ -126,7 +126,7 @@ class MotivationScreen extends StatelessWidget {
                     );
                   },
                 ),
-                Spacer(),
+                SizedBox(height: 2.h),
                 CustomNextButton(
                   title: 'Next',
                   onTap: () {

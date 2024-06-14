@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:my_journel/controllers/api_services/user_details_apis.dart';
 
+import '../../model/elevates_model.dart';
 import '../../model/goals_model.dart';
 import '../../model/motivation_model.dart';
 
@@ -12,6 +13,7 @@ class UserDetailController extends GetxController {
   RxBool loading = false.obs;
   Rx<Temperatures?> temperatures = Rx<Temperatures?>(null);
   Rx<MotivationModel?> motivations = Rx<MotivationModel?>(null);
+  Rx<ElevatesModel?> elevations = Rx<ElevatesModel?>(null);
 
   // goals Api
   Future<void> userDetails() async {
@@ -33,13 +35,29 @@ class UserDetailController extends GetxController {
 
   // motivation Api
   Future<void> motivation() async {
-    loading.value = false;
+    loading.value = true;
     try {
       UserDetail userDetail = UserDetail(context);
 
       MotivationModel? fetchMotivation = await userDetail.motivationApi();
       if (fetchMotivation != null) {
         motivations.value = fetchMotivation;
+      }
+    } catch (e) {
+      print('Error during get Detail: $e');
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  Future<void> elevate() async {
+    loading.value = true;
+    try {
+      UserDetail userDetail = UserDetail(context);
+
+      ElevatesModel? fetchElevate = await userDetail.elevatesApi();
+      if (fetchElevate != null) {
+        elevations.value = fetchElevate;
       }
     } catch (e) {
       print('Error during get Detail: $e');

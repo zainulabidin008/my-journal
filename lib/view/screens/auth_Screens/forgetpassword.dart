@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/controllers/utils/validations.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
@@ -19,14 +20,17 @@ class ForgetPassword extends StatefulWidget {
 class _ForgetPasswordState extends State<ForgetPassword> {
   late AuthController forgotController;
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    forgotController=Get.put(AuthController(context),);
+    forgotController = Get.put(
+      AuthController(context),
+    );
   }
+
+  final TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-
-    final TextEditingController emailController = TextEditingController();
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 4.h),
@@ -55,22 +59,31 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 isObscure: false,
                 svg: SvgPicture.asset('assets/svgs/lineicon.svg')),
             getVerticalSpace(4.6.h),
-          Obx(() =>   forgotController.isLoading.value?Center(child: CircularProgressIndicator(),):
-          customButton(
-              horizentalPadding: 7.7.h,
-              verticalPadding: .8.h,
-              title: "Next",
-              onTap: () {
-             String error=   Validations.resetPasswordHandleError(
-                  emailController: emailController
-                );
-                if(error.isEmpty){
-                  forgotController.forgotPassword(
-                    emailController.text.trim(),
-                  );
-                }
-
-              }),),
+            Obx(
+              () => forgotController.resendIsLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.blackColor,
+                      ),
+                    )
+                  : customButton(
+                      horizentalPadding: 7.7.h,
+                      verticalPadding: .8.h,
+                      title: "Next",
+                      onTap: () {
+                        String error = Validations.resetPasswordHandleError(
+                            emailController: emailController);
+                        if (error.isNotEmpty) {
+                          customScaffoldMessenger(
+                              context,
+                              Validations.resetPasswordHandleError(
+                                  emailController: emailController));
+                        } else {
+                          forgotController
+                              .forgotPassword(emailController.text.trim());
+                        }
+                      }),
+            ),
             getVerticalSpace(1.3.h),
             GestureDetector(
               onTap: () {
