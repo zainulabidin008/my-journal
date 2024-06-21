@@ -8,6 +8,7 @@ import 'package:my_journel/controllers/api_services/base_url.dart';
 import 'package:my_journel/controllers/utils/constants.dart';
 import 'package:my_journel/controllers/utils/shared_preferences.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
+import 'package:my_journel/view/bottombar.dart';
 import 'package:my_journel/view/screens/auth_Screens/createNew_Password.dart';
 import 'package:my_journel/view/screens/auth_Screens/login_screen.dart';
 import 'package:my_journel/view/screens/auth_Screens/otp_screen.dart';
@@ -29,17 +30,11 @@ class AuthApis {
     });
     Response response = await post(url, headers: headers, body: body);
     final responseBody = jsonDecode(response.body);
-    if (responseBody["result"] == true &&
-        responseBody["result"] == "Successfully, Register your account.") {
+    if (responseBody["result"] == true) {
       MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
       log("Login Api Successfully");
       customScaffoldMessenger(context, 'Successfully Login');
-      Get.off(() => ProgressBarScreen());
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Successfully",
-      //     "Successfully Login");
+      Get.off(() => MyBottomBar());
     } else if (responseBody["result"] ==
         "User already registered against this email.") {
       customScaffoldMessenger(context, 'text');
@@ -47,11 +42,6 @@ class AuthApis {
       log("login api failed");
       log(responseBody["message"]);
       customScaffoldMessenger(context, responseBody["message"]);
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Error",
-      //     responseBody["message"]);
     }
   }
 
@@ -68,11 +58,6 @@ class AuthApis {
     final responseBody = jsonDecode(response.body);
     if (responseBody["result"] == true) {
       log("signUp Api register Successfully");
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Successfully",
-      //     "Successfully SignUp");
       customScaffoldMessenger(context, 'Successfully SignUp');
       emailVerifyApi(userEmail);
       MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
@@ -86,11 +71,6 @@ class AuthApis {
       log("signUp api failed");
       log(responseBody["message"]);
       customScaffoldMessenger(context, responseBody["message"]);
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Error",
-      //     responseBody["message"]);
     }
   }
 
@@ -111,20 +91,10 @@ class AuthApis {
           ));
       log("Successfully Send Email");
       customScaffoldMessenger(context, 'Successfully Send Email');
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Successfully",
-      //     "Successfully Send Email");
     } else {
       log("Incorrect Email");
       log(responseBody["message"]);
       customScaffoldMessenger(context, responseBody["message"]);
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Error",
-      //     responseBody["message"]);
     }
   }
 
@@ -149,20 +119,10 @@ class AuthApis {
       log("Otp Verify Successfully");
       Get.off(() => const ProgressBarScreen());
       customScaffoldMessenger(context, 'Otp Verified Successfully');
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Successfully",
-      //     "Otp Verified Successfully");
     } else {
       log("Incorrect Otp");
       log(responseBody["message"]);
       customScaffoldMessenger(context, responseBody["message"]);
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Error",
-      //     responseBody["message"]);
     }
   }
 
@@ -216,28 +176,13 @@ class AuthApis {
     Response response = await post(url, headers: headers, body: body);
     final responseBody = jsonDecode(response.body);
     if (responseBody["result"] == true) {
-      // if (type == "forgot") {
-      //   Get.to(() => const CreateNewPassword());
-      // } else if (type == "email") {
-      //   Get.to(() => const CreateNewPassword());
-      // }
       log("Otp Verify Successfully");
       Get.off(() => const CreateNewPassword(), arguments: {'otp': userOtp});
       customScaffoldMessenger(context, 'Otp Verified Successfully');
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Successfully",
-      //     "Otp Verified Successfully");
     } else {
       log("Incorrect Otp");
       log(responseBody["message"]);
       customScaffoldMessenger(context, responseBody["message"]);
-      // Get.snackbar(
-      //     backgroundColor: AppColors.blackColor,
-      //     colorText: AppColors.whiteColor,
-      //     "Error",
-      //     responseBody["message"]);
     }
   }
 

@@ -52,7 +52,6 @@ class EveningBadScreen extends StatelessWidget {
   //   'Shopping',
   //   'Music',
   // ].obs;
-  RxList selectedEveningBadName = [].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -122,14 +121,14 @@ class EveningBadScreen extends StatelessWidget {
                 return Obx(
                   () => GestureDetector(
                     onTap: () {
-                      if (selectedEveningBadName.contains(datum.title)) {
-                        selectedEveningBadName.remove(datum.title);
+                      if (controller.activities.contains(datum.id)) {
+                        controller.activities.remove(datum.id);
                       } else {
-                        if (selectedEveningBadName.length < 10) {
-                          selectedEveningBadName.add(datum.title);
+                        if (controller.activities.length < 10) {
+                          controller.activities.add(datum.id);
                         }
                       }
-                      print(selectedEveningBadName.join(', '));
+                      print(controller.activities.join(', '));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -138,7 +137,7 @@ class EveningBadScreen extends StatelessWidget {
                         color: AppColors.primaryColor,
                         border: Border.all(
                           width: 2.0, // Changed 2.px to 2.0 for simplicity
-                          color: selectedEveningBadName.contains(datum.title)
+                          color: controller.activities.contains(datum.id)
                               ? Colors.black
                               : Colors.transparent,
                         ),
@@ -148,7 +147,7 @@ class EveningBadScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              selectedEveningBadName.contains(datum.title)
+                              controller.activities.contains(datum.id)
                                   ? Container(
                                       height: 20,
                                       width: 13,
@@ -159,7 +158,7 @@ class EveningBadScreen extends StatelessWidget {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          '${selectedEveningBadName.indexOf(datum.title) + 1}',
+                                          '${controller.activities.indexOf(datum.id) + 1}',
                                           style: TextStyle(
                                             fontSize: 10.0,
                                             fontFamily: 'regular',
@@ -196,7 +195,7 @@ class EveningBadScreen extends StatelessWidget {
             CustomNextButton(
               title: 'Next',
               onTap: () {
-                if (selectedEveningBadName.length < 1) {
+                if (controller.activities.length < 1) {
                   customScaffoldMessenger(
                       context, 'Please select minimum 1 items');
                 } else {

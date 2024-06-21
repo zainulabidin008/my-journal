@@ -15,34 +15,33 @@ class FeelAboutScreen extends StatelessWidget {
   final CheckInBarController controller = Get.put(CheckInBarController());
   // final HomeController controller = Get.put(HomeController());
 
-  RxList eveningBad = [
-    'assets/svgs/feelings_svgs/Group.svg',
-    'assets/svgs/feelings_svgs/Group (1).svg',
-    'assets/svgs/feelings_svgs/Group (2).svg',
-    'assets/svgs/feelings_svgs/Group (3).svg',
-    'assets/svgs/feelings_svgs/Group (4).svg',
-    'assets/svgs/feelings_svgs/Group (5).svg',
-    'assets/svgs/feelings_svgs/Group (6).svg',
-    'assets/svgs/feelings_svgs/Group (7).svg',
-    'assets/svgs/feelings_svgs/Group (8).svg',
-    'assets/svgs/feelings_svgs/Group (9).svg',
-    'assets/svgs/feelings_svgs/Group (10).svg',
-  ].obs;
-
-  RxList eveningBadName = [
-    'Happy',
-    'Blessed',
-    'Good',
-    'Confused',
-    'Lucky',
-    'Bored',
-    'Awkward',
-    'Angry',
-    'Anxious',
-    'Down',
-    'Stressed',
-  ].obs;
-  RxList selectedEveningBadName = [].obs;
+  // RxList eveningBad = [
+  //   'assets/svgs/feelings_svgs/Group.svg',
+  //   'assets/svgs/feelings_svgs/Group (1).svg',
+  //   'assets/svgs/feelings_svgs/Group (2).svg',
+  //   'assets/svgs/feelings_svgs/Group (3).svg',
+  //   'assets/svgs/feelings_svgs/Group (4).svg',
+  //   'assets/svgs/feelings_svgs/Group (5).svg',
+  //   'assets/svgs/feelings_svgs/Group (6).svg',
+  //   'assets/svgs/feelings_svgs/Group (7).svg',
+  //   'assets/svgs/feelings_svgs/Group (8).svg',
+  //   'assets/svgs/feelings_svgs/Group (9).svg',
+  //   'assets/svgs/feelings_svgs/Group (10).svg',
+  // ].obs;
+  //
+  // RxList eveningBadName = [
+  //   'Happy',
+  //   'Blessed',
+  //   'Good',
+  //   'Confused',
+  //   'Lucky',
+  //   'Bored',
+  //   'Awkward',
+  //   'Angry',
+  //   'Anxious',
+  //   'Down',
+  //   'Stressed',
+  // ].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -111,15 +110,14 @@ class FeelAboutScreen extends StatelessWidget {
                 return Obx(
                   () => GestureDetector(
                     onTap: () {
-                      if (selectedEveningBadName
-                          .contains(eveningBadName[index])) {
-                        selectedEveningBadName.remove(eveningBadName[index]);
+                      if (controller.selectedFeelings.contains(datum.id)) {
+                        controller.selectedFeelings.remove(datum.id);
                       } else {
-                        if (selectedEveningBadName.length < 10) {
-                          selectedEveningBadName.add(eveningBadName[index]);
+                        if (controller.selectedFeelings.length < 10) {
+                          controller.selectedFeelings.add(datum.id);
                         }
                       }
-                      print(selectedEveningBadName.join(', '));
+                      print(controller.selectedFeelings.join(', '));
                     },
                     child: Container(
                       // height: 17.h,
@@ -129,8 +127,7 @@ class FeelAboutScreen extends StatelessWidget {
                         color: AppColors.primaryColor,
                         border: Border.all(
                           width: 2.px,
-                          color: selectedEveningBadName
-                                  .contains(eveningBadName[index])
+                          color: controller.selectedFeelings.contains(datum.id)
                               ? Colors.black
                               : AppColors.whiteColor,
                         ),
@@ -141,8 +138,7 @@ class FeelAboutScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              selectedEveningBadName
-                                      .contains(eveningBadName[index])
+                              controller.selectedFeelings.contains(datum.id)
                                   ? Container(
                                       height: 20,
                                       width: 13,
@@ -153,7 +149,7 @@ class FeelAboutScreen extends StatelessWidget {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          '${selectedEveningBadName.indexOf(eveningBadName[index]) + 1}',
+                                          '${controller.selectedFeelings.indexOf(datum.id) + 1}',
                                           style: TextStyle(
                                             fontSize: 10.px,
                                             fontFamily: 'regular',
@@ -190,7 +186,7 @@ class FeelAboutScreen extends StatelessWidget {
             CustomNextButton(
               title: 'Next',
               onTap: () {
-                if (selectedEveningBadName.length < 1) {
+                if (controller.selectedFeelings.length < 1) {
                   customScaffoldMessenger(
                       context, 'Please select minimum 1 feeling');
                 } else {

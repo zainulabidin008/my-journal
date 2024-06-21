@@ -1,13 +1,7 @@
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/get_instance.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../controllers/utils/app_colors.dart';
@@ -31,7 +25,6 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
   final FlutterSoundPlayer _player = FlutterSoundPlayer();
   bool _isRecording = false;
   bool _isPlaying = false;
-  String _audioPath = '';
 
   @override
   void initState() {
@@ -47,10 +40,10 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
 
   Future<void> _startRecording() async {
     Directory tempDir = await getTemporaryDirectory();
-    _audioPath = '${tempDir.path}/audio_record.aac';
+    controller.audioPath.value = '${tempDir.path}/audio_record.aac';
 
     await _recorder.startRecorder(
-      toFile: _audioPath,
+      toFile: controller.audioPath.value,
       codec: Codec.aacADTS,
     );
     setState(() {
@@ -63,12 +56,12 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
     setState(() {
       _isRecording = false;
     });
-    log('Audio recorded and saved to: $_audioPath');
+    log('Audio recorded and saved to: $controller.audioPath.value');
   }
 
   Future<void> _playAudio() async {
     await _player.startPlayer(
-      fromURI: _audioPath,
+      fromURI: controller.audioPath.value,
       codec: Codec.aacADTS,
       whenFinished: () {
         setState(() {
@@ -93,7 +86,7 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
       _stopRecording();
     } else if (_isPlaying) {
       _stopAudio();
-    } else if (_audioPath.isEmpty) {
+    } else if (controller.audioPath.value.isEmpty) {
       _startRecording();
     } else {
       _playAudio();
@@ -169,7 +162,7 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log("path: $_audioPath");
+    log("path: ${controller.audioPath.value}");
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -188,25 +181,37 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      height: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.px),
-                        color: AppColors.whiteColor,
-                        border: Border.all(
-                          color: AppColors.blackColor,
-                          width: 1,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Yes',
-                          style: AppTextStyles.medium,
-                        ),
-                      ),
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.selectYes();
+                        log('bool: ${controller.isYesSelected.value}');
+                      },
+                      child: Obx(() => Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.px),
+                              color: controller.isYesSelected.value
+                                  ? Colors.green
+                                  : Colors.white,
+                              border: Border.all(
+                                color: AppColors.blackColor,
+                                width: 1,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Yes',
+                                style: AppTextStyles.medium.copyWith(
+                                  color: controller.isYesSelected.value
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
+                            ),
+                          )),
                     ),
                   ),
-                  getHorizentalSpace(10.px),
+                  SizedBox(width: 10.px),
                   GestureDetector(
                     onTap: () {
                       showCustomDialog(context);
@@ -219,24 +224,36 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
                       ),
                     ),
                   ),
-                  getHorizentalSpace(10.px),
+                  SizedBox(width: 10.px),
                   Expanded(
-                    child: Container(
-                      height: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.px),
-                        color: AppColors.whiteColor,
-                        border: Border.all(
-                          color: AppColors.blackColor,
-                          width: 1,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'No',
-                          style: AppTextStyles.medium,
-                        ),
-                      ),
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.selectNo();
+                        log('bool: ${controller.isYesSelected.value}');
+                      },
+                      child: Obx(() => Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.px),
+                              color: controller.isYesSelected.value
+                                  ? Colors.white
+                                  : Colors.red,
+                              border: Border.all(
+                                color: AppColors.blackColor,
+                                width: 1,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'No',
+                                style: AppTextStyles.medium.copyWith(
+                                  color: controller.isYesSelected.value
+                                      ? Colors.black
+                                      : Colors.white,
+                                ),
+                              ),
+                            ),
+                          )),
                     ),
                   ),
                 ],
@@ -269,6 +286,7 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
                   color: AppColors.whiteColor,
                 ),
                 child: TextFormField(
+                  controller: controller.describeDayController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.all(12),
@@ -298,7 +316,7 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
               GestureDetector(
                 onTap: _handleTap,
                 child: Container(
-                  height: 48,
+                  height: 48.px,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40.px),
                     color: AppColors.whiteColor,
@@ -334,7 +352,12 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
               CustomNextButton(
                 title: 'Next',
                 onTap: () {
-                  controller.nextScreen();
+                  if (controller.describeDayController.text.isEmpty) {
+                    customScaffoldMessenger(
+                        context, 'your day description is not be empty');
+                  } else {
+                    controller.nextScreen();
+                  }
                 },
               ),
             ],

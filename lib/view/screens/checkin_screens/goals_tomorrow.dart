@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -6,6 +8,7 @@ import 'package:my_journel/view/screens/buy_now_screen.dart';
 import 'package:my_journel/view/screens/checkin_screens/checkin_bar.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../controllers/getx_controller/checkin_controller.dart';
 import '../../../controllers/utils/app_colors.dart';
 import '../../../controllers/utils/app_styles.dart';
 import '../../../custom_widgets/ui_components.dart';
@@ -14,10 +17,11 @@ import '../../bottombar.dart';
 class GoalsForTomorrowScreen extends StatelessWidget {
   GoalsForTomorrowScreen({super.key});
   final CheckInBarController controller = Get.put(CheckInBarController());
-  // final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
+    final CheckInController checkInStatusController =
+        Get.put(CheckInController(context));
     return Padding(
       padding: EdgeInsets.all(3.h),
       child: Column(
@@ -36,6 +40,7 @@ class GoalsForTomorrowScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: TextFormField(
+                controller: controller.tomorrowGoalController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Describe what you will do tomorrow.',
@@ -55,9 +60,18 @@ class GoalsForTomorrowScreen extends StatelessWidget {
           CustomNextButton(
             title: 'Next',
             onTap: () {
-              // controller.nextScreen();
-              Get.offAll(() => BuyNowScreen());
-              // checkInProgressBarScreenController.disposeController();
+              // log("moods: ${controller.moodsId.toString()}");
+              // log("activities: ${controller.activities.toString()}");
+              // log("feelings: ${controller.selectedFeelings.toString()}");
+              // log("tomorrow description: ${controller.tomorrowGoalController.text}");
+              // log("day description: ${controller.describeDayController.text}");
+              if (controller.tomorrowGoalController.text.isEmpty) {
+                customScaffoldMessenger(
+                    context, 'your day description is not be empty');
+              } else {
+                checkInStatusController.checkInStatus();
+              }
+              // Get.offAll(() => BuyNowScreen());
             },
           ),
         ],
