@@ -133,10 +133,10 @@ packages:
     dependency: "direct main"
     description:
       name: curved_navigation_bar
-      sha256: ea6412d00c5d83501bbf1cf9d1ac2ff11a20fbaf910c103c95ace7de82910334
+      sha256: bb4ab128fcb6f4a9f0f1f72d227db531818b20218984789777f049fcbf919279
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.6"
   equatable:
     dependency: transitive
     description:
@@ -218,26 +218,26 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_sound
-      sha256: a2d409dd11abb323f6b55cf85cb987340b1917e4619ca32fe0608cd698a135c1
+      sha256: "2fd23c45130b2d003fc7205cd93aed3dd7f7cd4ba25f676576709b4274e14661"
       url: "https://pub.dev"
     source: hosted
-    version: "9.5.0"
+    version: "9.7.0"
   flutter_sound_platform_interface:
     dependency: transitive
     description:
       name: flutter_sound_platform_interface
-      sha256: cd43bd5e4d6c463a0b7c8f51e2a266feb581f4b908007cbfdd42ba6e7734a6f9
+      sha256: "615f1d911217f3e49a46e04c6593677106439732b29c2bd2401dc8007e8d4ab5"
       url: "https://pub.dev"
     source: hosted
-    version: "9.5.0"
+    version: "9.7.0"
   flutter_sound_web:
     dependency: transitive
     description:
       name: flutter_sound_web
-      sha256: "49f12a6ddd5685a34db648fcc931e2965c30a5dc518e405263654ef11ac943a2"
+      sha256: "8d4261a7e5e8429c75bab212f881a68ebcbf39a7d56535d585247cf25e357c62"
       url: "https://pub.dev"
     source: hosted
-    version: "9.5.0"
+    version: "9.7.0"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -300,10 +300,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.7"
+    version: "0.7.1"
   leak_tracker:
     dependency: transitive
     description:
@@ -508,10 +508,10 @@ packages:
     dependency: transitive
     description:
       name: platform
-      sha256: "12220bb4b65720483f8fa9450b4332347737cf8213dd2840d8b2c823e47243ec"
+      sha256: "9b71283fc13df574056616011fb138fd3b793ea47cc509c189a6c3fa5f8a1a65"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.4"
+    version: "3.1.5"
   plugin_platform_interface:
     dependency: transitive
     description:
