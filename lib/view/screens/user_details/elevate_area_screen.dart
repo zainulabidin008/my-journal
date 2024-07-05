@@ -19,29 +19,28 @@ class _ElevateAreaScreenState extends State<ElevateAreaScreen> {
   final ProgressBarScreenController progressBarScreenController =
       Get.put(ProgressBarScreenController());
 
-  List areaElevate = [
-    'Motivation',
-    'Leadership',
-    'Management',
-    'Time-management',
-    'Parenting',
-    'Emotions',
-    'Nutrition',
-    'Habits',
-    'Self-confidence',
-    'Mindfulness',
-    'Conflict-resolution',
-    'Leadership skills',
-    'Self-awareness',
-    'Resilience',
-    'Mindset',
-    'Self-care',
-    'Communication',
-    'Exercises',
-    'Empathy',
-  ].obs;
+  // List areaElevate = [
+  //   'Motivation',
+  //   'Leadership',
+  //   'Management',
+  //   'Time-management',
+  //   'Parenting',
+  //   'Emotions',
+  //   'Nutrition',
+  //   'Habits',
+  //   'Self-confidence',
+  //   'Mindfulness',
+  //   'Conflict-resolution',
+  //   'Leadership skills',
+  //   'Self-awareness',
+  //   'Resilience',
+  //   'Mindset',
+  //   'Self-care',
+  //   'Communication',
+  //   'Exercises',
+  //   'Empathy',
+  // ].obs;
 
-  RxList selectedAreaElevate = [].obs;
   late final UserDetailController controller;
 
   @override
@@ -94,13 +93,20 @@ class _ElevateAreaScreenState extends State<ElevateAreaScreen> {
                           index++)
                         GestureDetector(
                           onTap: () {
-                            if (selectedAreaElevate
-                                .contains(areaElevate[index])) {
-                              selectedAreaElevate.remove(areaElevate[index]);
+                            if (progressBarScreenController.selectedAreaElevate
+                                .contains(controller
+                                    .elevations.value!.data[index].id)) {
+                              progressBarScreenController.selectedAreaElevate
+                                  .remove(controller
+                                      .elevations.value!.data[index].id);
                             } else {
-                              selectedAreaElevate.add(areaElevate[index]);
+                              progressBarScreenController.selectedAreaElevate
+                                  .add(controller
+                                      .elevations.value!.data[index].id);
                             }
-                            print(selectedAreaElevate.join(', '));
+                            print(progressBarScreenController
+                                .selectedAreaElevate
+                                .join(', '));
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -111,8 +117,10 @@ class _ElevateAreaScreenState extends State<ElevateAreaScreen> {
                               borderRadius: BorderRadius.circular(4.0),
                               color: Colors.white,
                               border: Border.all(
-                                color: selectedAreaElevate
-                                        .contains(areaElevate[index])
+                                color: progressBarScreenController
+                                        .selectedAreaElevate
+                                        .contains(controller
+                                            .elevations.value!.data[index].id)
                                     ? Colors.black
                                     : Colors.white,
                                 width: 2.0,
@@ -131,7 +139,7 @@ class _ElevateAreaScreenState extends State<ElevateAreaScreen> {
               CustomNextButton(
                 title: 'Next',
                 onTap: () {
-                  if (selectedAreaElevate.isEmpty) {
+                  if (progressBarScreenController.selectedAreaElevate.isEmpty) {
                     customScaffoldMessenger(context, 'Please select the area');
                   } else {
                     progressBarScreenController.nextScreen();

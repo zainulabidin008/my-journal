@@ -60,7 +60,7 @@ class AuthApis {
       log("signUp Api register Successfully");
       customScaffoldMessenger(context, 'Successfully SignUp');
       emailVerifyApi(userEmail);
-      MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
+      // MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
       Get.to(
         () => OtpScreen(
           email: userEmail,
@@ -117,7 +117,11 @@ class AuthApis {
         Get.to(() => const CreateNewPassword());
       }
       log("Otp Verify Successfully");
-      Get.off(() => const ProgressBarScreen());
+      if (MySharedPreferences.getBool('userData') == true) {
+        Get.off(() => LoginScreen());
+      } else {
+        Get.off(() => const ProgressBarScreen());
+      }
       customScaffoldMessenger(context, 'Otp Verified Successfully');
     } else {
       log("Incorrect Otp");

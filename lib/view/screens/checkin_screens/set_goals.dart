@@ -1,19 +1,25 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:my_journel/controllers/getx_controller/checkin_controller.dart';
+import 'package:my_journel/controllers/utils/constants.dart';
+import 'package:my_journel/controllers/utils/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../controllers/api_services/base_url.dart';
 import '../../../controllers/utils/app_colors.dart';
 import '../../../controllers/utils/app_styles.dart';
 import '../../../custom_widgets/ui_components.dart';
 import 'checkin_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:http/http.dart' as http;
 import 'dart:io';
 
 class SetGoalsScreen extends StatefulWidget {
-  SetGoalsScreen({super.key});
+  const SetGoalsScreen({super.key});
 
   @override
   State<SetGoalsScreen> createState() => _SetGoalsScreenState();
@@ -23,8 +29,8 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
   final CheckInBarController controller = Get.put(CheckInBarController());
   final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   final FlutterSoundPlayer _player = FlutterSoundPlayer();
-  bool _isRecording = false;
-  bool _isPlaying = false;
+  RxBool isRecording = false.obs;
+  RxBool isPlaying = false.obs;
 
   @override
   void initState() {
@@ -40,23 +46,21 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
 
   Future<void> _startRecording() async {
     Directory tempDir = await getTemporaryDirectory();
-    controller.audioPath.value = '${tempDir.path}/audio_record.aac';
+    String filePath = '${tempDir.path}/audio_record.aac';
+    controller.audioPath.value = filePath;
 
     await _recorder.startRecorder(
-      toFile: controller.audioPath.value,
+      toFile: filePath,
       codec: Codec.aacADTS,
     );
-    setState(() {
-      _isRecording = true;
-    });
+    isRecording.value = true;
   }
 
   Future<void> _stopRecording() async {
     await _recorder.stopRecorder();
-    setState(() {
-      _isRecording = false;
-    });
-    log('Audio recorded and saved to: $controller.audioPath.value');
+    isRecording.value = false;
+    File recordedFile = File(controller.audioPath.value);
+    log('Audio recorded and saved to: ${recordedFile.path}');
   }
 
   Future<void> _playAudio() async {
@@ -64,27 +68,27 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
       fromURI: controller.audioPath.value,
       codec: Codec.aacADTS,
       whenFinished: () {
-        setState(() {
-          _isPlaying = false;
-        });
+        isPlaying.value = false;
       },
     );
-    setState(() {
-      _isPlaying = true;
-    });
+    isPlaying.value = true;
   }
 
   Future<void> _stopAudio() async {
     await _player.stopPlayer();
-    setState(() {
-      _isPlaying = false;
-    });
+    isPlaying.value = false;
+  }
+
+  Future<void> _deleteAudio() async {
+    File(controller.audioPath.value).delete();
+    controller.audioPath.value = '';
+    // setState(() {});
   }
 
   void _handleTap() {
-    if (_isRecording) {
+    if (isRecording.value) {
       _stopRecording();
-    } else if (_isPlaying) {
+    } else if (isPlaying.value) {
       _stopAudio();
     } else if (controller.audioPath.value.isEmpty) {
       _startRecording();
@@ -162,6 +166,7 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log("Note Id: ${controller.noteId.value}");
     log("path: ${controller.audioPath.value}");
     return GestureDetector(
       onTap: () {
@@ -186,29 +191,31 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
                         controller.selectYes();
                         log('bool: ${controller.isYesSelected.value}');
                       },
-                      child: Obx(() => Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.px),
-                              color: controller.isYesSelected.value
-                                  ? Colors.green
-                                  : Colors.white,
-                              border: Border.all(
-                                color: AppColors.blackColor,
-                                width: 1,
+                      child: Obx(
+                        () => Container(
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.px),
+                            color: controller.isYesSelected.value
+                                ? Colors.green
+                                : Colors.white,
+                            border: Border.all(
+                              color: AppColors.blackColor,
+                              width: 1,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Yes',
+                              style: AppTextStyles.medium.copyWith(
+                                color: controller.isYesSelected.value
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                             ),
-                            child: Center(
-                              child: Text(
-                                'Yes',
-                                style: AppTextStyles.medium.copyWith(
-                                  color: controller.isYesSelected.value
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
-                              ),
-                            ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(width: 10.px),
@@ -231,29 +238,31 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
                         controller.selectNo();
                         log('bool: ${controller.isYesSelected.value}');
                       },
-                      child: Obx(() => Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.px),
-                              color: controller.isYesSelected.value
-                                  ? Colors.white
-                                  : Colors.red,
-                              border: Border.all(
-                                color: AppColors.blackColor,
-                                width: 1,
+                      child: Obx(
+                        () => Container(
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.px),
+                            color: controller.isYesSelected.value
+                                ? Colors.white
+                                : Colors.red,
+                            border: Border.all(
+                              color: AppColors.blackColor,
+                              width: 1,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'No',
+                              style: AppTextStyles.medium.copyWith(
+                                color: controller.isYesSelected.value
+                                    ? Colors.black
+                                    : Colors.white,
                               ),
                             ),
-                            child: Center(
-                              child: Text(
-                                'No',
-                                style: AppTextStyles.medium.copyWith(
-                                  color: controller.isYesSelected.value
-                                      ? Colors.black
-                                      : Colors.white,
-                                ),
-                              ),
-                            ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -315,35 +324,55 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
               getVerticalSpace(1.h),
               GestureDetector(
                 onTap: _handleTap,
-                child: Container(
-                  height: 48.px,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40.px),
-                    color: AppColors.whiteColor,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.px),
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.blackColor,
-                          radius: 20,
-                          child: Center(
-                            child: _isRecording
-                                ? SvgPicture.asset('assets/svgs/mic.svg')
-                                : _isPlaying
-                                    ? Icon(Icons.pause,
-                                        size: 20, color: AppColors.whiteColor)
-                                    : Icon(
-                                        Icons.play_arrow,
-                                        size: 20,
-                                        color: AppColors.whiteColor,
-                                      ),
+                child: Obx(
+                  () => Container(
+                    height: 48.px,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.px),
+                      color: AppColors.whiteColor,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        controller.audioPath.value.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: AppColors.red,
+                                  size: 25.px,
+                                ),
+                                onPressed: _deleteAudio,
+                              )
+                            : const SizedBox(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.px),
+                          child: CircleAvatar(
+                            backgroundColor: isRecording.value
+                                ? Colors.red
+                                : isPlaying.value
+                                    ? Color(0xff0E9AFF)
+                                    : AppColors.blackColor,
+                            radius: 20,
+                            child: Center(
+                              child: isRecording.value
+                                  ? Icon(Icons.mic,
+                                      size: 20, color: AppColors.whiteColor)
+                                  : isPlaying.value
+                                      ? Icon(Icons.pause,
+                                          size: 20, color: AppColors.whiteColor)
+                                      : controller.audioPath.value.isEmpty
+                                          ? SvgPicture.asset(
+                                              'assets/svgs/mic.svg')
+                                          : Icon(
+                                              Icons.play_arrow,
+                                              size: 20,
+                                              color: AppColors.whiteColor,
+                                            ),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -355,6 +384,9 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
                   if (controller.describeDayController.text.isEmpty) {
                     customScaffoldMessenger(
                         context, 'your day description is not be empty');
+                  } else if (controller.audioPath.value.isEmpty) {
+                    customScaffoldMessenger(
+                        context, 'please try again to record voice');
                   } else {
                     controller.nextScreen();
                   }

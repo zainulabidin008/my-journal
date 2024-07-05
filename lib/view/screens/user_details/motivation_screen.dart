@@ -19,24 +19,23 @@ class MotivationScreen extends StatelessWidget {
   final ProgressBarScreenController progressBarScreenController =
       Get.put(ProgressBarScreenController());
 
-  RxList svg = [
-    'assets/svgs/motivation_svgs/after monitoring cofee.svg',
-    'assets/svgs/motivation_svgs/while commuting.svg',
-    'assets/svgs/motivation_svgs/during my lunch break.svg',
-    'assets/svgs/motivation_svgs/before going to sleep.svg',
-    'assets/svgs/motivation_svgs/any spare time.svg',
-  ].obs;
+  // RxList svg = [
+  //   'assets/svgs/motivation_svgs/after monitoring cofee.svg',
+  //   'assets/svgs/motivation_svgs/while commuting.svg',
+  //   'assets/svgs/motivation_svgs/during my lunch break.svg',
+  //   'assets/svgs/motivation_svgs/before going to sleep.svg',
+  //   'assets/svgs/motivation_svgs/any spare time.svg',
+  // ].obs;
+  //
+  // RxList motivateText = [
+  //   'After monitoring coffee',
+  //   'While commuting',
+  //   'During my lunch break',
+  //   'Before going to sleep',
+  //   'Any spare time',
+  // ].obs;
 
-  RxList motivateText = [
-    'After monitoring coffee',
-    'While commuting',
-    'During my lunch break',
-    'Before going to sleep',
-    'Any spare time',
-  ].obs;
-
-  RxInt selectedIndex = 0.obs;
-  final RxList<int> selectedIndexes = <int>[].obs;
+  // final RxList<int> selectedIndexes = <int>[].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +85,12 @@ class MotivationScreen extends StatelessWidget {
                     return Obx(
                       () => GestureDetector(
                         onTap: () {
-                          selectedIndex.value = index;
-                          if (kDebugMode) {
-                            print(motivateText[selectedIndex.value]);
-                          }
+                          progressBarScreenController
+                              .selectedMotivationIndex.value = index;
+                          progressBarScreenController.selectedMotivation.value =
+                              motivationData.id;
+                          print(
+                              'selected: ${progressBarScreenController.selectedMotivation.value}');
                         },
                         child: Column(
                           children: [
@@ -101,7 +102,10 @@ class MotivationScreen extends StatelessWidget {
                                   color: Colors.white,
                                   border: Border.all(
                                     width: 2.px,
-                                    color: selectedIndex.value == index
+                                    color: progressBarScreenController
+                                                .selectedMotivationIndex
+                                                .value ==
+                                            index
                                         ? Colors.black
                                         : Colors.transparent,
                                   )),
@@ -130,7 +134,13 @@ class MotivationScreen extends StatelessWidget {
                 CustomNextButton(
                   title: 'Next',
                   onTap: () {
-                    progressBarScreenController.nextScreen();
+                    if (progressBarScreenController
+                        .selectedMotivation.isNotEmpty) {
+                      progressBarScreenController.nextScreen();
+                    } else {
+                      customScaffoldMessenger(
+                          context, "please select motivation ");
+                    }
                   },
                 ),
               ],

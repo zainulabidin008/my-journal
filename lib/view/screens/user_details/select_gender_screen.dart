@@ -17,10 +17,8 @@ class SelectGenderScreen extends StatelessWidget {
     'Female',
   ].obs;
 
-  var selectedGender = ''.obs;
-
   void selectGender(String gender) {
-    selectedGender.value = gender;
+    progressBarScreenController.selectedGender.value = gender;
     print(gender);
   }
 
@@ -71,7 +69,9 @@ class SelectGenderScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(24.px),
                       border: Border.all(
                           width: 2.px,
-                          color: selectedGender.value == 'Male'
+                          color: progressBarScreenController
+                                      .selectedGender.value ==
+                                  'Male'
                               ? Colors.black
                               : Colors.white),
                     ),
@@ -101,7 +101,9 @@ class SelectGenderScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(24.px),
                       border: Border.all(
                           width: 2.px,
-                          color: selectedGender.value == 'Female'
+                          color: progressBarScreenController
+                                      .selectedGender.value ==
+                                  'Female'
                               ? Colors.black
                               : Colors.white),
                     ),
@@ -124,7 +126,7 @@ class SelectGenderScreen extends StatelessWidget {
           CustomNextButton(
             title: 'Next',
             onTap: () {
-              if (selectedGender.value.isEmpty) {
+              if (progressBarScreenController.selectedGender.value.isEmpty) {
                 customScaffoldMessenger(context, 'please select a gender');
               } else {
                 progressBarScreenController.nextScreen();

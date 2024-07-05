@@ -82,7 +82,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       passwordController,
                       'Password',
                       prefixIcon: SvgPicture.asset('assets/svgs/emailicon.svg'),
-                      isObscure: false,
+                      isObscure: true,
                       svg: SvgPicture.asset('assets/svgs/lineicon.svg'),
                     ),
                     getVerticalSpace(2.h),
@@ -91,7 +91,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       'Confirmed Password',
                       prefixIcon:
                           SvgPicture.asset('assets/svgs/passwordicon.svg'),
-                      isObscure: false,
+                      isObscure: true,
                       svg: SvgPicture.asset('assets/svgs/lineicon.svg'),
                     ),
                     getVerticalSpace(3.5.h),

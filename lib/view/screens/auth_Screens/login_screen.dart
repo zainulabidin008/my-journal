@@ -56,11 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         isObscure: false,
                         svg: SvgPicture.asset('assets/svgs/lineicon.svg')),
                     getVerticalSpace(2.h),
-                    customTextFormField(passwordController, 'Password',
-                        prefixIcon:
-                            SvgPicture.asset('assets/svgs/passwordicon.svg'),
-                        isObscure: false,
-                        svg: SvgPicture.asset('assets/svgs/lineicon.svg')),
+                    customTextFormField(
+                      passwordController,
+                      'Password',
+                      prefixIcon:
+                          SvgPicture.asset('assets/svgs/passwordicon.svg'),
+                      isObscure: true,
+                      svg: SvgPicture.asset('assets/svgs/lineicon.svg'),
+                    ),
                     getVerticalSpace(.8.h),
                     GestureDetector(
                       onTap: () {

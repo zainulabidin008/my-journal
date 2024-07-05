@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,7 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:my_journel/view/screens/checkin_screens/set_goals.dart';
 import 'package:my_journel/view/screens/checkin_screens/whatbad_evenining_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../controllers/getx_controller/getallapis_controller.dart';
 import 'day_screen.dart';
 import 'feel_about_screen.dart';
 import 'goals_tomorrow.dart';
@@ -16,6 +19,7 @@ class CheckInBarController extends GetxController {
   RxList activities = [].obs;
   RxList selectedFeelings = [].obs;
   RxString audioPath = ''.obs;
+  RxString noteId = ''.obs;
 
   RxBool isYesSelected = false.obs;
 
@@ -57,6 +61,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late final GetAllApis getAllPostsController;
   final CheckInBarController controller = Get.put(CheckInBarController());
 
   final List<Widget> screens = [
@@ -77,6 +82,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     controller.currentIndex.value = 0;
+    getAllPostsController = Get.put(GetAllApis(context));
   }
 
   void navigateToScreen(int index) {

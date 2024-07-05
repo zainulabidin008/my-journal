@@ -127,6 +127,35 @@ class _ProgressBarScreenState extends State<ProgressBarScreen> {
 }
 
 class ProgressBarScreenController extends GetxController {
+  // observable variable where store the data of selected moods
+  // Gender Screen
+  RxString selectedGender = ''.obs;
+
+  // Age Screen
+  RxInt selectedIndex = 0.obs;
+  RxString selectedAge = ''.obs;
+
+  // Goals Screen
+  final RxList<String> selectedGoals = <String>[].obs;
+
+  // elevates
+  RxList selectedAreaElevate = [].obs;
+
+  // Growth Time Screen
+  RxInt selectedTimeIndex = 0.obs;
+  RxString growthTime = ''.obs;
+
+  // Motivation Screen
+  RxInt selectedMotivationIndex = 0.obs;
+  RxString selectedMotivation = ''.obs;
+
+  // staying on Track
+  RxBool switchValue = false.obs;
+
+  // Do you agree with statement below? Screen
+  RxBool personalGrowth = false.obs;
+  RxBool keepMovingForward = false.obs;
+
   RxInt currentIndex = 0.obs;
   final RxInt totalScreens = 8.obs;
   final PageController pageController = PageController();

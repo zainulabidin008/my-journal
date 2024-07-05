@@ -21,18 +21,17 @@ class MyBottomBar extends StatefulWidget {
 class _MyBottomBarState extends State<MyBottomBar> {
   int currentIndex = 0;
 
-  late List<Widget> widgetOptions;
+  late List<Widget> widgetOptions = [
+    HomeScreen(),
+    StatisticsScreen(),
+    GoalScreen(),
+    SettingScreen(),
+  ];
 
-  @override
-  void initState() {
-    super.initState();
-    widgetOptions = [
-      HomeScreen(),
-      StatisticsScreen(),
-      GoalScreen(),
-      SettingScreen(),
-    ];
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   void onTap(int index) {
     setState(() {

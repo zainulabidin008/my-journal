@@ -13,28 +13,26 @@ class GoalsScreen extends StatelessWidget {
   final ProgressBarScreenController progressBarScreenController =
       Get.put(ProgressBarScreenController());
   final String imageBaseUrl = 'https://myjournalstorage.blob.core.windows.net/';
-
   GoalsScreen({super.key});
 
-  final RxList<String> svg = [
-    'assets/svgs/close knit family.svg',
-    'assets/svgs/achieve-life-balance.svg',
-    'assets/svgs/successful career.svg',
-    'assets/svgs/Become confident.svg',
-    'assets/svgs/Increase Productivity.svg',
-    'assets/svgs/Self employee.svg',
-  ].obs;
+  // final RxList<String> svg = [
+  //   'assets/svgs/close knit family.svg',
+  //   'assets/svgs/achieve-life-balance.svg',
+  //   'assets/svgs/successful career.svg',
+  //   'assets/svgs/Become confident.svg',
+  //   'assets/svgs/Increase Productivity.svg',
+  //   'assets/svgs/Self employee.svg',
+  // ].obs;
+  //
+  // final RxList<String> goals = [
+  //   'Built a close-knit family',
+  //   'Achieve life balance',
+  //   'Have a successful career',
+  //   'Become confident',
+  //   'Increase Productivity',
+  //   'Self employee',
+  // ].obs;
 
-  final RxList<String> goals = [
-    'Built a close-knit family',
-    'Achieve life balance',
-    'Have a successful career',
-    'Become confident',
-    'Increase Productivity',
-    'Self employee',
-  ].obs;
-
-  final RxList<int> selectedIndexes = <int>[].obs;
   @override
   Widget build(BuildContext context) {
     final UserDetailController controller =
@@ -87,14 +85,20 @@ class GoalsScreen extends StatelessWidget {
                     return Obx(
                       () => GestureDetector(
                         onTap: () {
-                          if (selectedIndexes.contains(index)) {
-                            selectedIndexes.remove(index);
+                          if (progressBarScreenController.selectedGoals
+                              .contains(datum.id)) {
+                            progressBarScreenController.selectedGoals
+                                .remove(datum.id);
                           } else {
-                            if (selectedIndexes.length < 3) {
-                              selectedIndexes.add(index);
+                            if (progressBarScreenController
+                                    .selectedGoals.length <
+                                3) {
+                              progressBarScreenController.selectedGoals
+                                  .add(datum.id);
                             }
                           }
-                          print(selectedIndexes.join(', '));
+                          print(progressBarScreenController.selectedGoals
+                              .join(', '));
                         },
                         child: Column(
                           children: [
@@ -106,7 +110,9 @@ class GoalsScreen extends StatelessWidget {
                                 color: Colors.white,
                                 border: Border.all(
                                   width: 2.px,
-                                  color: selectedIndexes.contains(index)
+                                  color: progressBarScreenController
+                                          .selectedGoals
+                                          .contains(datum.id)
                                       ? Colors.black
                                       : Colors.transparent,
                                 ),
@@ -136,10 +142,11 @@ class GoalsScreen extends StatelessWidget {
                 CustomNextButton(
                   title: 'Next',
                   onTap: () {
-                    if (selectedIndexes.length < 1) {
+                    if (progressBarScreenController.selectedGoals.isEmpty) {
                       customScaffoldMessenger(
                           context, 'please select minimum 1 goal');
-                    } else if (selectedIndexes.length >= 1) {
+                    } else if (progressBarScreenController
+                        .selectedGoals.isNotEmpty) {
                       progressBarScreenController.nextScreen();
                     }
                   },

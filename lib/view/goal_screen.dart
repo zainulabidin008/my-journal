@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../controllers/getx_controller/getallapis_controller.dart';
 import '../controllers/utils/app_colors.dart';
 import '../controllers/utils/app_styles.dart';
 import '../custom_widgets/ui_components.dart';
@@ -15,6 +19,9 @@ class GoalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GetAllApis controller = Get.put(GetAllApis(context));
+    controller.getHeading();
+    log("goal name: ${controller.getGoalsHeading.value?.data.goal}");
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -28,20 +35,23 @@ class GoalScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(3.h),
               color: AppColors.blackColor,
             ),
-            child: SingleChildScrollView(
-              child: Column(
+            child: Obx(
+              () => Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(''),
-                  Text(
-                    'Long term goals',
-                    style: TextStyle(
-                      fontSize: 16.px,
-                      fontFamily: 'medium',
-                      color: AppColors.whiteColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  controller.loading.value
+                      ? LoadingAnimationWidget.prograssiveDots(
+                          color: AppColors.whiteColor, size: 5.h)
+                      : Text(
+                          controller.getGoalsHeading.value!.data.goal,
+                          style: TextStyle(
+                            fontSize: 16.px,
+                            fontFamily: 'medium',
+                            color: AppColors.whiteColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                 ],
               ),
             ),

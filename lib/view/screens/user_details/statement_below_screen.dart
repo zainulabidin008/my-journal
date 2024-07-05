@@ -1,23 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
-import 'package:my_journel/view/bottombar.dart';
+import 'package:my_journel/view/screens/auth_Screens/login_screen.dart';
+import 'package:my_journel/view/screens/user_details/progressbar_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../controllers/getx_controller/user_detail_controller.dart';
 import '../../../custom_widgets/ui_components.dart';
-import '../auth_Screens/signup_screen.dart';
-import '../buy_now_screen.dart';
 
 class StatementBelowScreen extends StatelessWidget {
   StatementBelowScreen({super.key});
-  RxBool switchValue = false.obs;
 
-  RxBool personalGrowth = false.obs;
-  RxBool keepMovingForward = false.obs;
+  final ProgressBarScreenController progressBarScreenController =
+      Get.put(ProgressBarScreenController());
 
   @override
   Widget build(BuildContext context) {
+    final UserDetailController userDetailController =
+        Get.put(UserDetailController(context));
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 2.h),
@@ -40,11 +43,12 @@ class StatementBelowScreen extends StatelessWidget {
             SizedBox(height: 1.h),
             Row(
               children: [
-                // Yes button
                 GestureDetector(
                   onTap: () {
-                    personalGrowth.value = true;
-                    print(personalGrowth.value);
+                    progressBarScreenController.personalGrowth.value = true;
+                    if (kDebugMode) {
+                      print(progressBarScreenController.personalGrowth.value);
+                    }
                   },
                   child: Obx(() => Container(
                         height: 2.h,
@@ -53,10 +57,10 @@ class StatementBelowScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(40.px),
                           border: Border.all(
                             width: 1,
-                            color: personalGrowth.value
-                                ? AppColors
-                                    .deepBlack // Highlight "Yes" when selected
-                                : Colors.grey, // Grey out "Yes" when unselected
+                            color:
+                                progressBarScreenController.personalGrowth.value
+                                    ? AppColors.deepBlack
+                                    : Colors.grey,
                           ),
                         ),
                         child: Center(
@@ -65,7 +69,8 @@ class StatementBelowScreen extends StatelessWidget {
                             width: 1.2.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.px),
-                              color: personalGrowth.value
+                              color: progressBarScreenController
+                                      .personalGrowth.value
                                   ? AppColors.blackColor
                                   : Colors.transparent,
                             ),
@@ -79,10 +84,12 @@ class StatementBelowScreen extends StatelessWidget {
                   style: AppTextStyles.smallText,
                 ),
                 getHorizentalSpace(2.h),
-
                 GestureDetector(
                   onTap: () {
-                    personalGrowth.value = false;
+                    progressBarScreenController.personalGrowth.value = false;
+                    if (kDebugMode) {
+                      print(progressBarScreenController.personalGrowth.value);
+                    }
                   },
                   child: Obx(() => Container(
                         height: 2.h,
@@ -91,7 +98,8 @@ class StatementBelowScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(40.px),
                           border: Border.all(
                             width: 1,
-                            color: !personalGrowth.value
+                            color: !progressBarScreenController
+                                    .personalGrowth.value
                                 ? AppColors.deepBlack
                                 : Colors.grey,
                           ),
@@ -102,7 +110,8 @@ class StatementBelowScreen extends StatelessWidget {
                             width: 1.2.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.px),
-                              color: !personalGrowth.value
+                              color: !progressBarScreenController
+                                      .personalGrowth.value
                                   ? AppColors.blackColor
                                   : Colors.transparent,
                             ),
@@ -126,11 +135,13 @@ class StatementBelowScreen extends StatelessWidget {
             SizedBox(height: 1.h),
             Row(
               children: [
-                // Yes button
                 GestureDetector(
                   onTap: () {
-                    keepMovingForward.value = true;
-                    print(personalGrowth.value);
+                    progressBarScreenController.keepMovingForward.value = true;
+                    if (kDebugMode) {
+                      print(
+                          progressBarScreenController.keepMovingForward.value);
+                    }
                   },
                   child: Obx(() => Container(
                         height: 2.h,
@@ -139,7 +150,8 @@ class StatementBelowScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(40.px),
                           border: Border.all(
                             width: 1,
-                            color: keepMovingForward.value
+                            color: progressBarScreenController
+                                    .keepMovingForward.value
                                 ? AppColors.deepBlack
                                 : Colors.grey,
                           ),
@@ -150,7 +162,8 @@ class StatementBelowScreen extends StatelessWidget {
                             width: 1.2.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.px),
-                              color: keepMovingForward.value
+                              color: progressBarScreenController
+                                      .keepMovingForward.value
                                   ? AppColors.blackColor
                                   : Colors.transparent,
                             ),
@@ -164,10 +177,13 @@ class StatementBelowScreen extends StatelessWidget {
                   style: AppTextStyles.smallText,
                 ),
                 getHorizentalSpace(2.h),
-
                 GestureDetector(
                   onTap: () {
-                    keepMovingForward.value = false;
+                    progressBarScreenController.keepMovingForward.value = false;
+                    if (kDebugMode) {
+                      print(
+                          progressBarScreenController.keepMovingForward.value);
+                    }
                   },
                   child: Obx(() => Container(
                         height: 2.h,
@@ -176,7 +192,8 @@ class StatementBelowScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(40.px),
                           border: Border.all(
                             width: 1,
-                            color: !keepMovingForward.value
+                            color: !progressBarScreenController
+                                    .keepMovingForward.value
                                 ? AppColors.deepBlack
                                 : Colors.grey,
                           ),
@@ -187,7 +204,8 @@ class StatementBelowScreen extends StatelessWidget {
                             width: 1.2.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.px),
-                              color: !keepMovingForward.value
+                              color: !progressBarScreenController
+                                      .keepMovingForward.value
                                   ? AppColors.blackColor
                                   : Colors.transparent,
                             ),
@@ -203,17 +221,54 @@ class StatementBelowScreen extends StatelessWidget {
               ],
             ),
             Spacer(),
-            CustomNextButton(
-              title: 'Next',
-              onTap: () {
-                Get.to(
-                  () => MyBottomBar(),
-                );
-              },
-            ),
+            Obx(() {
+              return userDetailController.loading.value
+                  ? Center(
+                      child: LoadingAnimationWidget.prograssiveDots(
+                          color: AppColors.blackColor, size: 10.h),
+                    )
+                  : CustomNextButton(
+                      title: 'Next',
+                      onTap: () {
+                        userDetailController.updateUser(
+                          progressBarScreenController.selectedGender.value,
+                          progressBarScreenController.selectedAge.value,
+                          progressBarScreenController.selectedGoals,
+                          progressBarScreenController.selectedAreaElevate,
+                          progressBarScreenController.growthTime.value,
+                          progressBarScreenController.selectedMotivation.value,
+                          progressBarScreenController.switchValue.value,
+                          progressBarScreenController.personalGrowth.value,
+                          progressBarScreenController.keepMovingForward.value,
+                        );
+                        // Get.to(() => LoginScreen());
+                      },
+                    );
+            }),
           ],
         ),
       ),
     );
   }
 }
+
+// print(
+//     "Gender: ${progressBarScreenController.selectedGender.value}");
+// print("Age: ${progressBarScreenController.selectedAge.value}");
+// print("Goals: ${progressBarScreenController.selectedGoals}");
+// print(
+//     "Elevate: ${progressBarScreenController.selectedAreaElevate}");
+// print(
+//     "Growth Time: ${progressBarScreenController.growthTime.value}");
+// print(
+//     "Motivation: ${progressBarScreenController.selectedMotivation.value}");
+// print(
+//     "Staying on track: ${progressBarScreenController.switchValue.value}");
+// print(
+//     "Personal growth: ${progressBarScreenController.personalGrowth.value}");
+// print(
+//     "Keep Moving Forward: ${progressBarScreenController.keepMovingForward.value}");
+
+// Get.to(
+//   () => MyBottomBar(),
+// );

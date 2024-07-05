@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -13,8 +14,6 @@ class PushOrNotPushScreen extends StatelessWidget {
 
   final ProgressBarScreenController progressBarScreenController =
       Get.put(ProgressBarScreenController());
-
-  RxBool switchValue = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +56,14 @@ class PushOrNotPushScreen extends StatelessWidget {
                       child: CupertinoSwitch(
                         thumbColor: AppColors.blackColor,
                         onLabelColor: Colors.grey,
-                        value: switchValue.value,
+                        value: progressBarScreenController.switchValue.value,
                         onChanged: (value) {
-                          switchValue.value = value;
+                          progressBarScreenController.switchValue.value = value;
+                          if (kDebugMode) {
+                            print(
+                              progressBarScreenController.switchValue.value,
+                            );
+                          }
                         },
                       ),
                     ),

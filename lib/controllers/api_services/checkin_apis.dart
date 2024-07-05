@@ -7,11 +7,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_journel/controllers/utils/local_storage_variables.dart';
+import 'package:my_journel/controllers/utils/shared_preferences.dart';
 import 'package:my_journel/view/bottombar.dart';
 import '../../custom_widgets/ui_components.dart';
 import '../../model/checkin_models/activities_model.dart';
 import '../../model/checkin_models/feelings_model.dart';
 import '../../model/checkin_models/moodes_model.dart';
+import '../utils/constants.dart';
 import 'base_url.dart';
 
 class CheckInApis {
@@ -63,46 +66,8 @@ class CheckInApis {
     return null;
   }
 
-  Future<String?> voiceNoteApi(File voiceNote, String id) async {
-    final url = Uri.parse("${BaseUrl.url}/note/create");
-
-    try {
-      final request = http.MultipartRequest('POST', url)
-        ..headers.addAll({
-          'Content-Type': 'multipart/form-data',
-        })
-        ..fields['id'] = id;
-
-      final file = await http.MultipartFile.fromPath('note', voiceNote.path);
-
-      request.files.add(file);
-
-      final response = await request.send();
-
-      final responseBody = await response.stream.bytesToString();
-
-      if (response.statusCode == 200) {
-        final decodedResponse = jsonDecode(responseBody);
-
-        customScaffoldMessenger(context, decodedResponse['message']);
-        if (decodedResponse['success']) {
-          return decodedResponse['data']['url'];
-        }
-      } else {
-        return null;
-      }
-    } catch (error) {
-      if (context.mounted) {
-        customScaffoldMessenger(
-            context, 'An error occurred. Please try again.');
-      }
-      return null;
-    }
-    return null;
-  }
-
   Future<void> checkInStatusApi(
-    String userId,
+    // String userId,
     String mood,
     List activities,
     List feelings,
@@ -115,7 +80,7 @@ class CheckInApis {
     final headers = {"Content-Type": "application/json"};
     print("User Id$userId");
     final body = jsonEncode({
-      "userId": userId,
+      "userId": MySharedPreferences.getString(userIdKey),
       "mood": mood,
       "activities": activities,
       "feelings": feelings,
@@ -128,13 +93,55 @@ class CheckInApis {
     http.Response response = await http.post(url, headers: headers, body: body);
     final responseBody = jsonDecode(response.body);
     if (responseBody["result"] == true) {
-      Get.off(() => MyBottomBar());
+      Get.offAll(() => MyBottomBar());
       log("checkInStatusApi create Successfully");
       customScaffoldMessenger(context, 'Otp Verified Successfully');
     } else {
       log("checkInStatusApi created failed");
       log(responseBody["message"]);
       customScaffoldMessenger(context, responseBody["message"]);
+    }
+  }
+
+  Future<void> sendVoiceNote(
+    File audioFile,
+    String mood,
+    List activities,
+    List feelings,
+    bool goalAchieve,
+    String dayDescription,
+    String tomorrowDescription,
+  ) async {
+    if (audioFile.path.isEmpty) return;
+
+    var userId = MySharedPreferences.getString(userIdKey);
+    if (userId == null || userId.isEmpty) {
+      log('User ID not found');
+      return;
+    }
+
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('${BaseUrl.url}/note/create'),
+    );
+    request.fields['userId'] = userId;
+    log("api audio path: ${audioFile.path}");
+    request.files
+        .add(await http.MultipartFile.fromPath('note', audioFile.path));
+
+    var response = await request.send();
+    String responseBody = await response.stream.bytesToString();
+    var responseData = jsonDecode(responseBody);
+    if (responseData['message'] != 'No Voice Note Found') {
+      log('Voice note o successfully');
+      log('body: $responseBody');
+      String noteId = responseData['data']['_id'];
+      // checkInStatusApi();
+      checkInStatusApi(mood, activities, feelings, goalAchieve, dayDescription,
+          noteId, tomorrowDescription);
+      log("check Apis: $mood, $activities, $feelings, $goalAchieve, $dayDescription, $noteId, $tomorrowDescription");
+    } else {
+      log('No Voice Note Found');
     }
   }
 }

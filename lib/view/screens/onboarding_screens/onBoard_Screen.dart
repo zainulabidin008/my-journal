@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
+import 'package:my_journel/controllers/utils/shared_preferences.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:my_journel/view/screens/welcome_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -23,9 +24,16 @@ class OnBoardScreen1 extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: SizedBox(
                   height: 30.h,
-                  width:selectedIndex.value==1?MediaQuery.of(context).size.width: 36.5.h,
-                  child:  Image(
-                      image:selectedIndex.value==1? const AssetImage('assets/pngs/onboardtwo.png'):selectedIndex.value==2?const AssetImage('assets/pngs/onboardthree.png'): const AssetImage('assets/pngs/onboradone.png'))),
+                  width: selectedIndex.value == 1
+                      ? MediaQuery.of(context).size.width
+                      : 36.5.h,
+                  child: Image(
+                      image: selectedIndex.value == 1
+                          ? const AssetImage('assets/pngs/onboardtwo.png')
+                          : selectedIndex.value == 2
+                              ? const AssetImage('assets/pngs/onboardthree.png')
+                              : const AssetImage(
+                                  'assets/pngs/onboradone.png'))),
             ),
             getVerticalSpace(7.8.h),
             Expanded(
@@ -100,16 +108,17 @@ class OnBoardScreen1 extends StatelessWidget {
                     selectedIndex.value == 2
                         ? customButton(
                             title: "Get Started",
-                      onTap: (){
-                              Get.offAll(()=>const WelcomeScreen());
-                      }
-                          )
+                            onTap: () {
+                              Get.offAll(() => const WelcomeScreen());
+                            })
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
                                   onPressed: () {
-                                    Get.offAll(()=>const WelcomeScreen());
+                                    MySharedPreferences.setBool(
+                                        'firstTime', true);
+                                    Get.offAll(() => const WelcomeScreen());
                                   },
                                   child: Text(
                                     'Skip',
@@ -117,6 +126,8 @@ class OnBoardScreen1 extends StatelessWidget {
                                   )),
                               GestureDetector(
                                 onTap: () {
+                                  MySharedPreferences.setBool(
+                                      'firstTime', true);
                                   if (selectedIndex.value == 0) {
                                     selectedIndex.value = 1;
                                   } else if (selectedIndex.value == 1) {

@@ -20,7 +20,6 @@ class AgeScreen extends StatelessWidget {
     '55+',
   ].obs;
 
-  RxInt selectedIndex = 0.obs;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,7 +46,11 @@ class AgeScreen extends StatelessWidget {
                 return Obx(
                   () => GestureDetector(
                     onTap: () {
-                      selectedIndex.value = index;
+                      progressBarScreenController.selectedIndex.value = index;
+                      progressBarScreenController.selectedAge.value =
+                          age[index];
+                      print(
+                          'selectedAge: ${progressBarScreenController.selectedAge}');
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 1.5.h),
@@ -57,7 +60,9 @@ class AgeScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16.px),
                           border: Border.all(
                               width: 2.px,
-                              color: selectedIndex.value == index
+                              color: progressBarScreenController
+                                          .selectedIndex.value ==
+                                      index
                                   ? Colors.black
                                   : Colors.white),
                         ),
@@ -77,7 +82,11 @@ class AgeScreen extends StatelessWidget {
             CustomNextButton(
               title: 'Next',
               onTap: () {
-                progressBarScreenController.nextScreen();
+                if (progressBarScreenController.selectedAge.isNotEmpty) {
+                  progressBarScreenController.nextScreen();
+                } else {
+                  customScaffoldMessenger(context, "please select your age");
+                }
               },
             ),
           ],

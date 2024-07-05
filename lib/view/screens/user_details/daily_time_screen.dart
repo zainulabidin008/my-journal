@@ -1,9 +1,9 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:my_journel/view/screens/user_details/progressbar_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../custom_widgets/ui_components.dart';
 
 class DailyTimeScreen extends StatefulWidget {
@@ -17,13 +17,8 @@ class _DailyTimeScreenState extends State<DailyTimeScreen> {
   final ProgressBarScreenController progressBarScreenController =
       Get.put(ProgressBarScreenController());
 
-  var selectedIndex = 0.obs;
-
-  void selectIndex(int index) {
-    selectedIndex.value = index;
-  }
-
   final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -37,20 +32,29 @@ class _DailyTimeScreenState extends State<DailyTimeScreen> {
     super.dispose();
   }
 
+  void selectIndex(int index) {
+    progressBarScreenController.selectedTimeIndex.value = index;
+  }
+
   void _onScroll() {
     double centerOffset =
         _scrollController.offset + 58; // Half of 116 (item height)
-    int middleIndex = (centerOffset / 40).round();
+    int middleIdx = (centerOffset / 40).round();
 
     print("Center Offset: $centerOffset");
-    print("Middle Index: $middleIndex");
+    print("Middle Index: $middleIdx");
+    print("growth Time value: ${progressBarScreenController.growthTime.value}");
 
     // Update the selected index
-    selectIndex(middleIndex);
+    selectIndex(middleIdx);
+
+    // Update the middle index observable variable
+    progressBarScreenController.growthTime.value = (middleIdx + 1).toString();
   }
 
   @override
   Widget build(BuildContext context) {
+    log('growth time: ${progressBarScreenController.growthTime.value}');
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 2.h),
@@ -94,18 +98,27 @@ class _DailyTimeScreenState extends State<DailyTimeScreen> {
                             Text(
                               '$time',
                               style: TextStyle(
-                                fontSize:
-                                    selectedIndex.value == index ? 20 : 16,
-                                color: selectedIndex.value == index
+                                fontSize: progressBarScreenController
+                                            .selectedTimeIndex.value ==
+                                        index
+                                    ? 20
+                                    : 16,
+                                color: progressBarScreenController
+                                            .selectedTimeIndex.value ==
+                                        index
                                     ? Colors.black
                                     : Color(0xff7C7C7C),
-                                fontWeight: selectedIndex.value == index
+                                fontWeight: progressBarScreenController
+                                            .selectedTimeIndex.value ==
+                                        index
                                     ? FontWeight.bold
                                     : FontWeight.normal,
                               ),
                             ),
                             SizedBox(width: 20),
-                            selectedIndex.value == index
+                            progressBarScreenController
+                                        .selectedTimeIndex.value ==
+                                    index
                                 ? Text(
                                     'min',
                                     style: TextStyle(
@@ -129,7 +142,11 @@ class _DailyTimeScreenState extends State<DailyTimeScreen> {
             CustomNextButton(
               title: 'Next',
               onTap: () {
-                progressBarScreenController.nextScreen();
+                if (progressBarScreenController.growthTime.value.isNotEmpty) {
+                  progressBarScreenController.nextScreen();
+                } else {
+                  customScaffoldMessenger(context, 'Time will not be empty');
+                }
               },
             ),
           ],
