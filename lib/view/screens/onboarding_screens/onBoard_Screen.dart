@@ -104,7 +104,7 @@ class OnBoardScreen1 extends StatelessWidget {
                       style: AppTextStyles.regularStyle,
                       textAlign: TextAlign.center,
                     ),
-                    getVerticalSpace(10.4.h),
+                    getVerticalSpace(9.0.h),
                     selectedIndex.value == 2
                         ? customButton(
                             title: "Get Started",

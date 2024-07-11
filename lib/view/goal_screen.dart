@@ -11,16 +11,30 @@ import '../controllers/utils/app_colors.dart';
 import '../controllers/utils/app_styles.dart';
 import '../custom_widgets/ui_components.dart';
 
-class GoalScreen extends StatelessWidget {
+class GoalScreen extends StatefulWidget {
   GoalScreen({super.key});
 
+  @override
+  State<GoalScreen> createState() => _GoalScreenState();
+}
+
+class _GoalScreenState extends State<GoalScreen> {
   final TextEditingController lifeGoals = TextEditingController();
   final TextEditingController yearOfGoals = TextEditingController();
+  late GetAllApis controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = Get.put(GetAllApis(context));
+    controller.getHeading();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final GetAllApis controller = Get.put(GetAllApis(context));
-    controller.getHeading();
+    // final GetAllApis controller = Get.put(GetAllApis(context));
+    // controller.getHeading();
     log("goal name: ${controller.getGoalsHeading.value?.data.goal}");
     return GestureDetector(
       onTap: () {
@@ -32,7 +46,10 @@ class GoalScreen extends StatelessWidget {
             height: 10.5.h,
             width: Get.width,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3.h),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(3.h),
+                bottomRight: Radius.circular(3.h),
+              ),
               color: AppColors.blackColor,
             ),
             child: Obx(

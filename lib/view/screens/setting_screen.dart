@@ -5,9 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../controllers/utils/app_colors.dart';
-import '../../controllers/utils/app_styles.dart';
 
 class SettingScreen extends StatelessWidget {
   SettingScreen({super.key});
@@ -22,7 +20,10 @@ class SettingScreen extends StatelessWidget {
           height: 10.5.h,
           width: Get.width,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3.h),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(3.h),
+              bottomRight: Radius.circular(3.h),
+            ),
             color: AppColors.blackColor,
           ),
           child: Column(
@@ -41,7 +42,6 @@ class SettingScreen extends StatelessWidget {
             ],
           ),
         ),
-        // getVerticalSpace(5.h),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 3.h),
           child: Column(

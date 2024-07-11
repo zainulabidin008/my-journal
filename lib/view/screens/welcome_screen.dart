@@ -21,10 +21,11 @@ class WelcomeScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: SvgPicture.asset(
               'assets/svgs/welcomeicon.svg',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
-          getVerticalSpace(16.8.h),
+          // getVerticalSpace(16.8.h),
+          Spacer(),
           customButton(
             title: "Create new account",
             horizentalPadding: 11.h,
@@ -39,8 +40,10 @@ class WelcomeScreen extends StatelessWidget {
             },
             child: Text(
               'Already have account?',
-              style: AppTextStyles.simpleSmallText
-                  .copyWith(fontSize: 14.px, fontWeight: FontWeight.w600),
+              style: AppTextStyles.simpleSmallText.copyWith(
+                fontSize: 14.px,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           )
         ],

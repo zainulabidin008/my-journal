@@ -16,64 +16,68 @@ class GoalsForTomorrowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CheckInController checkInController =
-        Get.put(CheckInController(context));
+    final CheckInController checkInController = Get.put(
+      CheckInController(context),
+    );
     print("Note Id: ${controller.noteId.value}");
-    return Padding(
-      padding: EdgeInsets.all(3.h),
-      child: Column(
-        children: [
-          Text(
-            'Set goals for tomorrow',
-            textAlign: TextAlign.center,
-            style: AppTextStyles.heading,
-          ),
-          getVerticalSpace(5.h),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.px),
-              color: AppColors.whiteColor,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Padding(
+        padding: EdgeInsets.all(3.h),
+        child: Column(
+          children: [
+            Text(
+              'Set goals for tomorrow',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.heading,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: TextFormField(
-                controller: controller.tomorrowGoalController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Describe what you will do tomorrow.',
-                  hintStyle: TextStyle(
-                    fontSize: 10.px,
-                    fontFamily: 'medium',
-                    color: AppColors.simpleSmallTextColor,
-                    fontWeight: FontWeight.w400,
+            getVerticalSpace(5.h),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.px),
+                color: AppColors.whiteColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: TextFormField(
+                  controller: controller.tomorrowGoalController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Describe what you will do tomorrow.',
+                    hintStyle: TextStyle(
+                      fontSize: 10.px,
+                      fontFamily: 'medium',
+                      color: AppColors.simpleSmallTextColor,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
+                  maxLines: 6,
                 ),
-                maxLines: 6,
               ),
             ),
-          ),
-          Spacer(),
-          Obx(() {
-            return checkInController.loading.value
-                ? Center(
-                    child:
-                        CircularProgressIndicator(color: AppColors.blackColor),
-                  )
-                : CustomNextButton(
-                    title: 'Next',
-                    onTap: () {
-                      if (controller.tomorrowGoalController.text.isEmpty) {
-                        customScaffoldMessenger(
-                            context, 'your day description is not be empty');
-                      } else {
-                        checkInController
-                            .sendVoice(File(controller.audioPath.value));
-                      }
-                      // Get.offAll(() => BuyNowScreen());
-                    },
-                  );
-          })
-        ],
+            Spacer(),
+            Obx(() {
+              return checkInController.loading.value
+                  ? Center(
+                      child: CircularProgressIndicator(
+                          color: AppColors.blackColor),
+                    )
+                  : CustomNextButton(
+                      title: 'Next',
+                      onTap: () {
+                        if (controller.tomorrowGoalController.text.isEmpty) {
+                          customScaffoldMessenger(
+                              context, 'your day description is not be empty');
+                        } else {
+                          checkInController
+                              .sendVoice(File(controller.audioPath.value));
+                        }
+                        // Get.offAll(() => BuyNowScreen());
+                      },
+                    );
+            })
+          ],
+        ),
       ),
     );
   }

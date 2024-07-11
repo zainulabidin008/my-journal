@@ -42,7 +42,10 @@ class StatisticsScreen extends StatelessWidget {
             height: 10.5.h,
             width: Get.width,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3.h),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(3.h),
+                bottomRight: Radius.circular(3.h),
+              ),
               color: AppColors.blackColor,
             ),
             child: Column(
@@ -108,6 +111,8 @@ class StatisticsScreen extends StatelessWidget {
                 ),
                 getVerticalSpace(3.h),
                 Container(
+                  height: 30.h,
+                  width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.px),
                     color: Colors.white,

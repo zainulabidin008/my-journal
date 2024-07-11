@@ -75,19 +75,21 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                 isObscure: isVisible1.value == true ? false : true,
                 svg: SvgPicture.asset('assets/svgs/lineicon.svg'),
                 suffixIcon: GestureDetector(
-                    onTap: () {
-                      if (isVisible1.value == false) {
-                        isVisible1.value = true;
-                      } else {
-                        isVisible1.value = false;
-                      }
-                    },
-                    child: SvgPicture.asset(
-                        isVisible1.value == false
-                            ? 'assets/svgs/notvisible.svg'
-                            : "assets/svgs/visible.svg",
-                        colorFilter: const ColorFilter.mode(
-                            Color(0xff9E9FA1), BlendMode.srcIn))),
+                  onTap: () {
+                    if (isVisible1.value == false) {
+                      isVisible1.value = true;
+                    } else {
+                      isVisible1.value = false;
+                    }
+                  },
+                  child: SvgPicture.asset(
+                    isVisible1.value == false
+                        ? 'assets/svgs/notvisible.svg'
+                        : "assets/svgs/visible.svg",
+                    colorFilter: const ColorFilter.mode(
+                        Color(0xff9E9FA1), BlendMode.srcIn),
+                  ),
+                ),
               ),
               getVerticalSpace(1.2.h),
               customTextFormField(

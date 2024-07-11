@@ -57,14 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  RxString name = "".obs;
-
   @override
   Widget build(BuildContext context) {
     final GetAllApis getAllPostsController = Get.put(GetAllApis(context));
     getAllPostsController.getAllPosts();
     log('formattedDate: $formattedDate');
-    log('name: $name');
+    log('name: ${getAllPostsController.name}');
     audioPlayer.onPlayerComplete.listen((event) {
       isPlaying.value = false;
       position.value = Duration.zero;
@@ -84,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
       var firstPost = posts.data[0];
 
       if (firstPost.userId != null) {
-        name.value = firstPost.userId.name;
+        getAllPostsController.name.value = firstPost.userId.name;
       }
     }
 
@@ -137,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Hey ${name.value}!',
+                            'Hey ${getAllPostsController.name.value}!',
                             style: TextStyle(
                               fontSize: 20.px,
                               fontFamily: 'Bold',

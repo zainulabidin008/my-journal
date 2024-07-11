@@ -14,6 +14,7 @@ class GetAllApis extends GetxController {
   Rx<GetAllPostsModel?> getAllPost = Rx<GetAllPostsModel?>(null);
   Rx<GoalHeadingModel?> getGoalsHeading = Rx<GoalHeadingModel?>(null);
   Rx<StatisticsModel?> statistics = Rx<StatisticsModel?>(null);
+  RxString name = "".obs;
 
   Future<void> getAllPosts() async {
     try {

@@ -72,138 +72,140 @@ class EveningBadScreen extends StatelessWidget {
       }
       return Padding(
         padding: EdgeInsets.all(5.h),
-        child: Column(
-          children: [
-            Text(
-              'Hmm... What made your evening somewhat bad?',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.heading,
-            ),
-            getVerticalSpace(5.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Select up to 10 Activates',
-                  style: TextStyle(
-                    fontSize: 14.px,
-                    fontFamily: 'regular',
-                    color: AppColors.blackColor,
-                  ),
-                ),
-                Text(
-                  '1/10',
-                  style: TextStyle(
-                    fontSize: 14.px,
-                    fontFamily: 'regular',
-                    color: AppColors.blackColor,
-                  ),
-                ),
-              ],
-            ),
-            getVerticalSpace(1.h),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount:
-                  activitiesController.activities.value?.data.length ?? 0,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 5.0,
-                mainAxisSpacing: 5.0,
-                childAspectRatio: 2 / 3,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                'Hmm... What made your evening somewhat bad?',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.heading,
               ),
-              itemBuilder: (context, index) {
-                print(
-                    'Activities Length: ${activitiesController.activities.value?.data.length}');
-                Datum datum =
-                    activitiesController.activities.value!.data[index];
-                return Obx(
-                  () => GestureDetector(
-                    onTap: () {
-                      if (controller.activities.contains(datum.id)) {
-                        controller.activities.remove(datum.id);
-                      } else {
-                        if (controller.activities.length < 10) {
-                          controller.activities.add(datum.id);
-                        }
-                      }
-                      print(controller.activities.join(', '));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            8.0), // Changed 8.px to 8.0 for simplicity
-                        color: AppColors.primaryColor,
-                        border: Border.all(
-                          width: 2.0, // Changed 2.px to 2.0 for simplicity
-                          color: controller.activities.contains(datum.id)
-                              ? Colors.black
-                              : Colors.transparent,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              controller.activities.contains(datum.id)
-                                  ? Container(
-                                      height: 20,
-                                      width: 13,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        color: AppColors.blackColor,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          '${controller.activities.indexOf(datum.id) + 1}',
-                                          style: TextStyle(
-                                            fontSize: 10.0,
-                                            fontFamily: 'regular',
-                                            color: AppColors.whiteColor,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : SizedBox.shrink(),
-                            ],
-                          ),
-                          SizedBox(
-                              height: 5.h,
-                              width: 5.h,
-                              child: Image.network(datum.path)),
-                          SizedBox(
-                              height:
-                                  8.0), // Changed getVerticalSpace(1.h) to SizedBox for simplicity
-                          Text(
-                            datum.title,
-                            style: AppTextStyles.smallText,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
+              getVerticalSpace(5.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Select up to 10 Activates',
+                    style: TextStyle(
+                      fontSize: 14.px,
+                      fontFamily: 'regular',
+                      color: AppColors.blackColor,
                     ),
                   ),
-                );
-              },
-            ),
-            Spacer(),
-            CustomNextButton(
-              title: 'Next',
-              onTap: () {
-                if (controller.activities.length < 1) {
-                  customScaffoldMessenger(
-                      context, 'Please select minimum 1 items');
-                } else {
-                  controller.nextScreen();
-                }
-              },
-            ),
-          ],
+                  Text(
+                    '1/10',
+                    style: TextStyle(
+                      fontSize: 14.px,
+                      fontFamily: 'regular',
+                      color: AppColors.blackColor,
+                    ),
+                  ),
+                ],
+              ),
+              getVerticalSpace(1.h),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount:
+                    activitiesController.activities.value?.data.length ?? 0,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 5.0,
+                  mainAxisSpacing: 5.0,
+                  childAspectRatio: 2 / 3,
+                ),
+                itemBuilder: (context, index) {
+                  print(
+                      'Activities Length: ${activitiesController.activities.value?.data.length}');
+                  Datum datum =
+                      activitiesController.activities.value!.data[index];
+                  return Obx(
+                    () => GestureDetector(
+                      onTap: () {
+                        if (controller.activities.contains(datum.id)) {
+                          controller.activities.remove(datum.id);
+                        } else {
+                          if (controller.activities.length < 10) {
+                            controller.activities.add(datum.id);
+                          }
+                        }
+                        print(controller.activities.join(', '));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              8.0), // Changed 8.px to 8.0 for simplicity
+                          color: AppColors.primaryColor,
+                          border: Border.all(
+                            width: 2.0, // Changed 2.px to 2.0 for simplicity
+                            color: controller.activities.contains(datum.id)
+                                ? Colors.black
+                                : Colors.transparent,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                controller.activities.contains(datum.id)
+                                    ? Container(
+                                        height: 20,
+                                        width: 13,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          color: AppColors.blackColor,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '${controller.activities.indexOf(datum.id) + 1}',
+                                            style: TextStyle(
+                                              fontSize: 10.0,
+                                              fontFamily: 'regular',
+                                              color: AppColors.whiteColor,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox.shrink(),
+                              ],
+                            ),
+                            SizedBox(
+                                height: 5.h,
+                                width: 5.h,
+                                child: Image.network(datum.path)),
+                            SizedBox(
+                                height:
+                                    8.0), // Changed getVerticalSpace(1.h) to SizedBox for simplicity
+                            Text(
+                              datum.title,
+                              style: AppTextStyles.smallText,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 2.h),
+              CustomNextButton(
+                title: 'Next',
+                onTap: () {
+                  if (controller.activities.length < 1) {
+                    customScaffoldMessenger(
+                        context, 'Please select minimum 1 items');
+                  } else {
+                    controller.nextScreen();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       );
     });
