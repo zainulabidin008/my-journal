@@ -35,120 +35,132 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Obx(() => Scaffold(
-              body: SingleChildScrollView(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        getVerticalSpace(14.h),
-                        SvgPicture.asset('assets/svgs/myjournal.svg'),
-                        getVerticalSpace(6.7.h),
-                        Text(
-                          'Log In',
-                          style: AppTextStyles.boldStyle,
-                        ),
-                        getVerticalSpace(4.h),
-                        customTextFormField(emailController, 'Email',
-                            prefixIcon:
-                                SvgPicture.asset('assets/svgs/emailicon.svg'),
-                            isObscure: false,
-                            svg: SvgPicture.asset('assets/svgs/lineicon.svg')),
-                        getVerticalSpace(2.h),
-                        customTextFormField(
-                          passwordController,
-                          'Password',
-                          prefixIcon:
-                              SvgPicture.asset('assets/svgs/passwordicon.svg'),
-                          isObscure: true,
-                          svg: SvgPicture.asset('assets/svgs/lineicon.svg'),
-                        ),
-                        getVerticalSpace(.8.h),
-                        GestureDetector(
-                          onTap: () {
-                            Get.to(() => const ForgetPassword());
-                          },
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              'Forgot password?',
-                              style: AppTextStyles.simpleSmallText.copyWith(
-                                  fontSize: 12.px,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xff181919)),
+              resizeToAvoidBottomInset: false,
+              body: Container(
+                height: Get.height,
+                width: Get.width,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/pngs/background_image.jpeg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          getVerticalSpace(14.h),
+                          SvgPicture.asset('assets/svgs/myjournal.svg'),
+                          getVerticalSpace(6.7.h),
+                          Text(
+                            'Log In',
+                            style: AppTextStyles.boldStyle,
+                          ),
+                          getVerticalSpace(4.h),
+                          customTextFormField(emailController, 'Email',
+                              prefixIcon:
+                                  SvgPicture.asset('assets/svgs/emailicon.svg'),
+                              isObscure: false,
+                              svg:
+                                  SvgPicture.asset('assets/svgs/lineicon.svg')),
+                          getVerticalSpace(2.h),
+                          customTextFormField(
+                            passwordController,
+                            'Password',
+                            prefixIcon: SvgPicture.asset(
+                                'assets/svgs/passwordicon.svg'),
+                            isObscure: true,
+                            svg: SvgPicture.asset('assets/svgs/lineicon.svg'),
+                          ),
+                          getVerticalSpace(.8.h),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => const ForgetPassword());
+                            },
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                'Forgot password?',
+                                style: AppTextStyles.simpleSmallText.copyWith(
+                                    fontSize: 12.px,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff181919)),
+                              ),
                             ),
                           ),
-                        ),
-                        getVerticalSpace(6.6.h),
-                        loginController.isLoading.value
-                            ? Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColors.blackColor,
-                                ),
-                              )
-                            : customButton(
-                                horizentalPadding: 16.h,
-                                title: "Login",
-                                onTap: () {
-                                  String error = Validations.loginHandleError(
-                                      emailController: emailController,
-                                      passwordController: passwordController);
-                                  if (error.isNotEmpty) {
-                                    customScaffoldMessenger(
-                                        context,
-                                        Validations.loginHandleError(
-                                            emailController: emailController,
-                                            passwordController:
-                                                passwordController));
-                                  } else {
-                                    loginController.login(
-                                      emailController.text.trim(),
-                                      passwordController.text.trim(),
-                                    );
-                                  }
-                                }),
-                        getVerticalSpace(1.6.h),
-                        GestureDetector(
-                          onTap: () {
-                            Get.to(() => SignupScreen());
-                          },
-                          child: RichText(
-                              text: TextSpan(children: [
-                            TextSpan(
-                              text: 'Don’t have an account? ',
-                              style: AppTextStyles.simpleSmallText.copyWith(
-                                  fontSize: 14.px,
-                                  color: const Color(0xff444545)),
-                            ),
-                            TextSpan(
-                              text: 'Sign Up',
-                              style: AppTextStyles.boldStyle
-                                  .copyWith(fontSize: 14.px),
-                            ),
-                          ])),
-                        ),
-                        getVerticalSpace(4.4.h),
-                        Text(
-                          'Login with',
-                          style: AppTextStyles.simpleSmallText.copyWith(
-                            fontSize: 14.px,
-                            color: const Color(0xff444545),
+                          getVerticalSpace(6.6.h),
+                          loginController.isLoading.value
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.blackColor,
+                                  ),
+                                )
+                              : customButton(
+                                  horizentalPadding: 16.h,
+                                  title: "Login",
+                                  onTap: () {
+                                    String error = Validations.loginHandleError(
+                                        emailController: emailController,
+                                        passwordController: passwordController);
+                                    if (error.isNotEmpty) {
+                                      customScaffoldMessenger(
+                                          context,
+                                          Validations.loginHandleError(
+                                              emailController: emailController,
+                                              passwordController:
+                                                  passwordController));
+                                    } else {
+                                      loginController.login(
+                                        emailController.text.trim(),
+                                        passwordController.text.trim(),
+                                      );
+                                    }
+                                  }),
+                          getVerticalSpace(1.6.h),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => SignupScreen());
+                            },
+                            child: RichText(
+                                text: TextSpan(children: [
+                              TextSpan(
+                                text: 'Don’t have an account? ',
+                                style: AppTextStyles.simpleSmallText.copyWith(
+                                    fontSize: 14.px,
+                                    color: const Color(0xff444545)),
+                              ),
+                              TextSpan(
+                                text: 'Sign Up',
+                                style: AppTextStyles.boldStyle
+                                    .copyWith(fontSize: 14.px),
+                              ),
+                            ])),
                           ),
-                        ),
-                        getVerticalSpace(2.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset('assets/svgs/google.svg'),
-                            getHorizentalSpace(1.6.h),
-                            SvgPicture.asset('assets/svgs/facebook.svg'),
-                            getHorizentalSpace(1.6.h),
-                            SvgPicture.asset('assets/svgs/apple.svg'),
-                          ],
-                        )
-                      ],
+                          getVerticalSpace(4.4.h),
+                          Text(
+                            'Login with',
+                            style: AppTextStyles.simpleSmallText.copyWith(
+                              fontSize: 14.px,
+                              color: const Color(0xff444545),
+                            ),
+                          ),
+                          getVerticalSpace(2.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset('assets/svgs/google.svg'),
+                              getHorizentalSpace(1.6.h),
+                              SvgPicture.asset('assets/svgs/facebook.svg'),
+                              getHorizentalSpace(1.6.h),
+                              SvgPicture.asset('assets/svgs/apple.svg'),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -38,91 +38,106 @@ class StatisticsScreen extends StatelessWidget {
 
       return Column(
         children: [
-          Container(
-            height: 10.5.h,
-            width: Get.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(3.h),
-                bottomRight: Radius.circular(3.h),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/pngs/background_image.jpeg'),
+                  fit: BoxFit.cover,
+                ),
               ),
-              color: AppColors.blackColor,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(''),
-                Text(
-                  'Statistic',
-                  style: TextStyle(
-                    fontSize: 16.px,
-                    fontFamily: 'medium',
-                    color: AppColors.whiteColor,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 3.h),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    StatisticsCustomWidget(
-                      title: data.streak.toString(),
-                      subTitle: 'Current Streak',
-                      svg: 'assets/svgs/fire.svg',
+              child: Column(
+                children: [
+                  Container(
+                    height: 10.5.h,
+                    width: Get.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(3.h),
+                        bottomRight: Radius.circular(3.h),
+                      ),
+                      color: AppColors.blackColor,
                     ),
-                    getHorizentalSpace(2.h),
-                    StatisticsCustomWidget(
-                      title: data.posts.toString(),
-                      subTitle: 'Achieved Goals',
-                      svg: 'assets/svgs/arrow-board.svg',
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(''),
+                        Text(
+                          'Statistic',
+                          style: TextStyle(
+                            fontSize: 16.px,
+                            fontFamily: 'medium',
+                            color: AppColors.whiteColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                getVerticalSpace(2.h),
-                Row(
-                  children: [
-                    StatisticsCustomWidget(
-                      title: data.notes.toString(),
-                      subTitle: 'Voice over',
-                      svg: 'assets/svgs/mic-svg.svg',
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 2.h, vertical: 3.h),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            StatisticsCustomWidget(
+                              title: data.streak.toString(),
+                              subTitle: 'Current Streak',
+                              svg: 'assets/svgs/fire.svg',
+                            ),
+                            getHorizentalSpace(2.h),
+                            StatisticsCustomWidget(
+                              title: data.posts.toString(),
+                              subTitle: 'Achieved Goals',
+                              svg: 'assets/svgs/arrow-board.svg',
+                            ),
+                          ],
+                        ),
+                        getVerticalSpace(2.h),
+                        Row(
+                          children: [
+                            StatisticsCustomWidget(
+                              title: data.notes.toString(),
+                              subTitle: 'Voice over',
+                              svg: 'assets/svgs/mic-svg.svg',
+                            ),
+                            getHorizentalSpace(2.h),
+                            StatisticsCustomWidget(
+                              title: 'Happy',
+                              subTitle: 'Mood Average',
+                              svg: 'assets/svgs/happy.svg',
+                            ),
+                          ],
+                        ),
+                        getVerticalSpace(3.h),
+                        Text(
+                          'Statistic Goals',
+                          style: TextStyle(
+                            fontSize: 16.px,
+                            fontFamily: 'Bold',
+                            color: AppColors.deepBlack,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        getVerticalSpace(3.h),
+                        Container(
+                          height: 30.h,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.px),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(child: LineChartSample2()),
+                          ),
+                        ),
+                      ],
                     ),
-                    getHorizentalSpace(2.h),
-                    StatisticsCustomWidget(
-                      title: 'Happy',
-                      subTitle: 'Mood Average',
-                      svg: 'assets/svgs/happy.svg',
-                    ),
-                  ],
-                ),
-                getVerticalSpace(3.h),
-                Text(
-                  'Statistic Goals',
-                  style: TextStyle(
-                    fontSize: 16.px,
-                    fontFamily: 'Bold',
-                    color: AppColors.deepBlack,
-                    fontWeight: FontWeight.w600,
                   ),
-                ),
-                getVerticalSpace(3.h),
-                Container(
-                  height: 30.h,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.px),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(child: LineChartSample2()),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

@@ -71,10 +71,10 @@ class CheckInController extends GetxController {
   Future<void> sendVoice(
     File audioFile,
   ) async {
+    loading.value = true;
     try {
-      loading.value = true;
       CheckInApis voiceNote = CheckInApis(context);
-      voiceNote.sendVoiceNote(
+      await voiceNote.sendVoiceNote(
         audioFile,
         controller.moodsId.toString(),
         controller.activities,

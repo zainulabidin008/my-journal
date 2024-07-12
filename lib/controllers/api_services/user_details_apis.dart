@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:my_journel/controllers/utils/constants.dart';
 import 'package:my_journel/controllers/utils/shared_preferences.dart';
 import 'package:my_journel/custom_widgets/ui_components.dart';
+import 'package:my_journel/view/bottombar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/elevates_model.dart';
 import '../../model/goals_model.dart';
@@ -107,9 +108,9 @@ class UserDetail {
 
       if (response.statusCode == 200 &&
           responseData['message'] == "Successfully, Update User") {
-        final prefs = await SharedPreferences.getInstance();
+        // final prefs = await SharedPreferences.getInstance();
         MySharedPreferences.setBool('userData', true);
-        Get.off(() => LoginScreen());
+        Get.off(() => MyBottomBar());
         print('User details updated successfully');
         customScaffoldMessenger(context, "your Data is Updated");
       } else {

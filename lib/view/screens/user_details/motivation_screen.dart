@@ -42,112 +42,108 @@ class MotivationScreen extends StatelessWidget {
     final UserDetailController controller =
         Get.put(UserDetailController(context));
     controller.motivation();
-    return Scaffold(
-      body: Obx(() {
-        if (controller.loading.value) {
-          return Center(
-            child: LoadingAnimationWidget.prograssiveDots(
-                color: AppColors.blackColor, size: 10.h),
-          );
-        }
-        if (controller.motivations.value == null) {
-          return Center(
-            child: Text("No data available"),
-          );
-        }
-        return SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 2.h),
-            child: Column(
-              children: [
-                SizedBox(height: 5.h),
-                Text(
-                  'When do you like to find most motivation?',
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.heading,
-                ),
-                SizedBox(height: 4.h),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: controller.motivations.value?.data.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                    childAspectRatio: 1.0,
-                  ),
-                  itemBuilder: (context, index) {
-                    print(
-                        'Length: ${controller.motivations.value?.data.length}');
-                    MotivationData motivationData =
-                        controller.motivations.value!.data[index];
-                    return Obx(
-                      () => GestureDetector(
-                        onTap: () {
-                          progressBarScreenController
-                              .selectedMotivationIndex.value = index;
-                          progressBarScreenController.selectedMotivation.value =
-                              motivationData.id;
-                          print(
-                              'selected: ${progressBarScreenController.selectedMotivation.value}');
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 12.h,
-                              width: 17.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.px),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    width: 2.px,
-                                    color: progressBarScreenController
-                                                .selectedMotivationIndex
-                                                .value ==
-                                            index
-                                        ? Colors.black
-                                        : Colors.transparent,
-                                  )),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12.px),
-                                child: Image.network(
-                                  motivationData.path,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 0.5.h),
-                            Expanded(
-                              child: Text(
-                                motivationData.title,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                SizedBox(height: 2.h),
-                CustomNextButton(
-                  title: 'Next',
-                  onTap: () {
-                    if (progressBarScreenController
-                        .selectedMotivation.isNotEmpty) {
-                      progressBarScreenController.nextScreen();
-                    } else {
-                      customScaffoldMessenger(
-                          context, "please select motivation ");
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
+    return Obx(() {
+      if (controller.loading.value) {
+        return Center(
+          child: LoadingAnimationWidget.prograssiveDots(
+              color: AppColors.blackColor, size: 10.h),
         );
-      }),
-    );
+      }
+      if (controller.motivations.value == null) {
+        return Center(
+          child: Text("No data available"),
+        );
+      }
+      return SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 2.h),
+          child: Column(
+            children: [
+              SizedBox(height: 5.h),
+              Text(
+                'When do you like to find most motivation?',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.heading,
+              ),
+              SizedBox(height: 4.h),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.motivations.value?.data.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 1.0,
+                ),
+                itemBuilder: (context, index) {
+                  print('Length: ${controller.motivations.value?.data.length}');
+                  MotivationData motivationData =
+                      controller.motivations.value!.data[index];
+                  return Obx(
+                    () => GestureDetector(
+                      onTap: () {
+                        progressBarScreenController
+                            .selectedMotivationIndex.value = index;
+                        progressBarScreenController.selectedMotivation.value =
+                            motivationData.id;
+                        print(
+                            'selected: ${progressBarScreenController.selectedMotivation.value}');
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 12.h,
+                            width: 17.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.px),
+                                color: Colors.white,
+                                border: Border.all(
+                                  width: 2.px,
+                                  color: progressBarScreenController
+                                              .selectedMotivationIndex.value ==
+                                          index
+                                      ? Colors.black
+                                      : Colors.transparent,
+                                )),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.px),
+                              child: Image.network(
+                                motivationData.path,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 0.5.h),
+                          Expanded(
+                            child: Text(
+                              motivationData.title,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 2.h),
+              CustomNextButton(
+                title: 'Next',
+                onTap: () {
+                  if (progressBarScreenController
+                      .selectedMotivation.isNotEmpty) {
+                    progressBarScreenController.nextScreen();
+                  } else {
+                    customScaffoldMessenger(
+                        context, "please select motivation ");
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

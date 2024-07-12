@@ -137,8 +137,8 @@ class CheckInApis {
       log('body: $responseBody');
       String noteId = responseData['data']['_id'];
       // checkInStatusApi();
-      checkInStatusApi(mood, activities, feelings, goalAchieve, dayDescription,
-          noteId, tomorrowDescription);
+      await checkInStatusApi(mood, activities, feelings, goalAchieve,
+          dayDescription, noteId, tomorrowDescription);
       log("check Apis: $mood, $activities, $feelings, $goalAchieve, $dayDescription, $noteId, $tomorrowDescription");
     } else {
       log('No Voice Note Found');

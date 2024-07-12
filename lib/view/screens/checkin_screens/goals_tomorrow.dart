@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:my_journel/view/screens/checkin_screens/checkin_bar.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../controllers/getx_controller/checkin_controller.dart';
@@ -59,17 +60,17 @@ class GoalsForTomorrowScreen extends StatelessWidget {
             Obx(() {
               return checkInController.loading.value
                   ? Center(
-                      child: CircularProgressIndicator(
-                          color: AppColors.blackColor),
+                      child: LoadingAnimationWidget.prograssiveDots(
+                          color: AppColors.blackColor, size: 7.h),
                     )
                   : CustomNextButton(
                       title: 'Next',
-                      onTap: () {
+                      onTap: () async {
                         if (controller.tomorrowGoalController.text.isEmpty) {
                           customScaffoldMessenger(
                               context, 'your day description is not be empty');
                         } else {
-                          checkInController
+                          await checkInController
                               .sendVoice(File(controller.audioPath.value));
                         }
                         // Get.offAll(() => BuyNowScreen());

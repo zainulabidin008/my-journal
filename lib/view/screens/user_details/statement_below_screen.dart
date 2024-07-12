@@ -225,12 +225,12 @@ class StatementBelowScreen extends StatelessWidget {
               return userDetailController.loading.value
                   ? Center(
                       child: LoadingAnimationWidget.prograssiveDots(
-                          color: AppColors.blackColor, size: 10.h),
+                          color: AppColors.blackColor, size: 7.h),
                     )
                   : CustomNextButton(
                       title: 'Next',
-                      onTap: () {
-                        userDetailController.updateUser(
+                      onTap: () async {
+                        await userDetailController.updateUser(
                           progressBarScreenController.selectedGender.value,
                           progressBarScreenController.selectedAge.value,
                           progressBarScreenController.selectedGoals,

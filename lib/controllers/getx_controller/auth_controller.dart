@@ -5,6 +5,8 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:my_journel/controllers/api_services/auth_apis.dart';
 import 'package:my_journel/view/screens/auth_Screens/otp_screen.dart';
 
+import '../../custom_widgets/ui_components.dart';
+import '../../view/bottombar.dart';
 import '../../view/screens/auth_Screens/createNew_Password.dart';
 import '../utils/local_storage_variables.dart';
 
@@ -16,12 +18,19 @@ class AuthController extends GetxController {
   RxString otp = "".obs;
 
   //login
-  Future<void> login(String email, password) async {
+  Future<void> login(String? email, String? password) async {
     isLoading.value = true;
     try {
-      await AuthApis(context).loginApi(email, password);
+      if (email == null || password == null) {
+        customScaffoldMessenger(context, 'Email and password cannot be null');
+        return;
+      }
+
+      final bool isLoginSuccessful =
+          await AuthApis(context).loginApi(email, password);
+      if (isLoginSuccessful) {}
     } catch (e) {
-      log("Error occurred:$e");
+      log("Error occurred: $e");
     } finally {
       isLoading.value = false;
     }
@@ -33,14 +42,6 @@ class AuthController extends GetxController {
     isLoading.value = true;
     try {
       await AuthApis(context).signUpApi(userName, userEmail, userPassword);
-      // if (userId.isNotEmpty) {
-      //   Get.to(
-      //     () => OtpScreen(
-      //       email: userEmail,
-      //       type: 'email',
-      //     ),
-      //   );
-      // }
     } catch (e) {
       log("Error occurred: $e");
     } finally {
@@ -61,13 +62,28 @@ class AuthController extends GetxController {
   }
 
   // verifyEmailOtp
-  Future<void> verifyEmailOtp(String userOtp, String type) async {
+  Future<void> verifyEmailOtp(
+      String? userOtp, String type, String? email, String? password) async {
     isLoading.value = true;
     try {
-      await AuthApis(context).emailVerifyOtpApi(userOtp, userId);
+      if (userOtp == null || userOtp.isEmpty) {
+        customScaffoldMessenger(context, 'OTP cannot be empty');
+        return;
+      }
+
+      final bool isOtpVerified =
+          await AuthApis(context).emailVerifyOtpApi(userOtp, type);
+      if (isOtpVerified) {
+        // If OTP verification is successful, call the login method only if email and password are provided
+        if (email != null && password != null) {
+          await login(email, password);
+        } else {
+          customScaffoldMessenger(
+              context, 'Email and password cannot be null for login');
+        }
+      }
     } catch (e) {
-      isLoading.value = false;
-      log("Error occurred:$e");
+      log("Error occurred: $e");
     } finally {
       isLoading.value = false;
     }

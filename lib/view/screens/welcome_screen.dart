@@ -14,7 +14,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: AppColors.primaryColor,
       body: Column(
         children: [
           SizedBox(
@@ -25,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
           // getVerticalSpace(16.8.h),
-          Spacer(),
+          SizedBox(height: 15.h),
           customButton(
             title: "Create new account",
             horizentalPadding: 11.h,

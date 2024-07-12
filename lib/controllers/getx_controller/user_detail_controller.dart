@@ -86,11 +86,10 @@ class UserDetailController extends GetxController {
     bool movingForward,
   ) async {
     loading.value = true;
-
     try {
       UserDetail userDetail = UserDetail(context);
-      userDetail.updateUserDetails(gender, age, goals, elevates, growthTime,
-          motivations, stayOnTrack, personalGrowth, movingForward);
+      await userDetail.updateUserDetails(gender, age, goals, elevates,
+          growthTime, motivations, stayOnTrack, personalGrowth, movingForward);
     } catch (e) {
       if (kDebugMode) {
         print('Error during update Detail: $e');

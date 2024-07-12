@@ -101,36 +101,48 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         body: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(height: 3.h),
-              Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(5, (index) {
-                    return GestureDetector(
-                      onTap: () => navigateToScreen(index),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4),
-                        child: Container(
-                          height: 5,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.px),
-                            color: controller.shouldFillDots(index)
-                                ? Colors.black
-                                : Colors.white,
+          child: Container(
+            height: Get.height,
+            width: Get.width,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/pngs/background_image.jpeg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 3.h),
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(5, (index) {
+                      return GestureDetector(
+                        onTap: () => navigateToScreen(index),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4),
+                          child: Container(
+                            height: 5,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6.px),
+                              color: controller.shouldFillDots(index)
+                                  ? Colors.black
+                                  : Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Obx(() => screens[controller.currentIndex.value]),
-              ),
-            ],
+                Expanded(
+                  child: Obx(
+                    () => screens[controller.currentIndex.value],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

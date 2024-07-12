@@ -58,67 +58,78 @@ class _ProgressBarScreenState extends State<ProgressBarScreen> {
     return Scaffold(
       body: SafeArea(
         child: Obx(
-          () => Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 2.h),
-                child: SizedBox(
-                  height: 6,
-                  child: Obx(
-                    () => ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: progressBarScreenController.totalScreens.value,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4),
-                          child: Container(
-                            height: 5,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6.px),
-                              color: index <=
-                                      progressBarScreenController
-                                          .currentIndex.value
-                                  ? Colors.black
-                                  : Colors.white,
+          () => Container(
+            height: Get.height,
+            width: Get.width,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/pngs/background_image.jpeg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 2.h),
+                  child: SizedBox(
+                    height: 6,
+                    child: Obx(
+                      () => ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount:
+                            progressBarScreenController.totalScreens.value,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4),
+                            child: Container(
+                              height: 5,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6.px),
+                                color: index <=
+                                        progressBarScreenController
+                                            .currentIndex.value
+                                    ? Colors.black
+                                    : Colors.white,
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: PageView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: progressBarScreenController.pageController,
-                  itemCount: progressBarScreenController.totalScreens.value,
-                  itemBuilder: (context, index) {
-                    return screens[index];
-                  },
+                Expanded(
+                  child: PageView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: progressBarScreenController.pageController,
+                    itemCount: progressBarScreenController.totalScreens.value,
+                    itemBuilder: (context, index) {
+                      return screens[index];
+                    },
+                  ),
                 ),
-              ),
-              // Navigation Buttons
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       ElevatedButton(
-              //         onPressed: progressBarScreenController.previousScreen,
-              //         child: Text('Previous'),
-              //       ),
-              //       ElevatedButton(
-              //         onPressed: progressBarScreenController.nextScreen,
-              //         child: Text('Next'),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-            ],
+                // Uncomment and update if you want to use navigation buttons
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       ElevatedButton(
+                //         onPressed: progressBarScreenController.previousScreen,
+                //         child: Text('Previous'),
+                //       ),
+                //       ElevatedButton(
+                //         onPressed: progressBarScreenController.nextScreen,
+                //         child: Text('Next'),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ),
       ),

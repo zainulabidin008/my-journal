@@ -14,181 +14,191 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 10.5.h,
-          width: Get.width,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(3.h),
-              bottomRight: Radius.circular(3.h),
+    return Container(
+      height: Get.height,
+      width: Get.width,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/pngs/background_image.jpeg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: 10.5.h,
+            width: Get.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(3.h),
+                bottomRight: Radius.circular(3.h),
+              ),
+              color: AppColors.blackColor,
             ),
-            color: AppColors.blackColor,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(''),
-              Text(
-                'Setting',
-                style: TextStyle(
-                  fontSize: 16.px,
-                  fontFamily: 'medium',
-                  color: AppColors.whiteColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 3.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'In-App Purchases',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.px,
-                  fontFamily: 'Bold',
-                  color: AppColors.blackColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              getVerticalSpace(2.h),
-              SettingRowWidget(
-                svg: 'assets/svgs/settings/app-purchase.svg',
-                title: 'Upgrade Premium',
-                onTap: () {},
-              ),
-              SettingRowWidget(
-                svg: 'assets/svgs/settings/restore.svg',
-                title: 'Restore Purchases',
-                onTap: () {},
-                unable: false,
-              ),
-              getVerticalSpace(3.h),
-              Text(
-                'App Passcode',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.px,
-                  fontFamily: 'Bold',
-                  color: AppColors.blackColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              getVerticalSpace(2.h),
-              SettingRowWidget(
-                svg: 'assets/svgs/settings/face-id.svg',
-                title: 'Face ID',
-                onTap: () {},
-              ),
-              SettingRowWidget(
-                svg: 'assets/svgs/settings/set-passcode.svg',
-                title: 'Set Passcode',
-                onTap: () {},
-              ),
-              SettingRowWidget(
-                svg: 'assets/svgs/settings/disable-passcode.svg',
-                title: 'Disable Passcode',
-                onTap: () {},
-                unable: false,
-              ),
-              getVerticalSpace(7.h),
-              Text(
-                'Daily Reminders',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.px,
-                  fontFamily: 'Bold',
-                  color: AppColors.blackColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              getVerticalSpace(2.h),
-              Row(
-                children: [
-                  SvgPicture.asset('assets/svgs/settings/bell-icon.svg'),
-                  getHorizentalSpace(4.px),
-                  Text(
-                    'Enable Reminders',
-                    style: TextStyle(
-                      fontSize: 12.px,
-                      fontFamily: 'regular',
-                      color: AppColors.blackColor,
-                      fontWeight: FontWeight.w400,
-                    ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(''),
+                Text(
+                  'Setting',
+                  style: TextStyle(
+                    fontSize: 16.px,
+                    fontFamily: 'medium',
+                    color: AppColors.whiteColor,
+                    fontWeight: FontWeight.w500,
                   ),
-                  Spacer(),
-                  Obx(
-                    () => SizedBox(
-                      height: 10,
-                      child: Transform.scale(
-                        scale: 0.6,
-                        child: CupertinoSwitch(
-                          thumbColor: AppColors.blackColor,
-                          onLabelColor: Colors.grey,
-                          value: reminderSwitchValue.value,
-                          onChanged: (value) {
-                            reminderSwitchValue.value = value;
-                          },
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 3.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'In-App Purchases',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.px,
+                    fontFamily: 'Bold',
+                    color: AppColors.blackColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                getVerticalSpace(2.h),
+                SettingRowWidget(
+                  svg: 'assets/svgs/settings/app-purchase.svg',
+                  title: 'Upgrade Premium',
+                  onTap: () {},
+                ),
+                SettingRowWidget(
+                  svg: 'assets/svgs/settings/restore.svg',
+                  title: 'Restore Purchases',
+                  onTap: () {},
+                  unable: false,
+                ),
+                getVerticalSpace(3.h),
+                Text(
+                  'App Passcode',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.px,
+                    fontFamily: 'Bold',
+                    color: AppColors.blackColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                getVerticalSpace(2.h),
+                SettingRowWidget(
+                  svg: 'assets/svgs/settings/face-id.svg',
+                  title: 'Face ID',
+                  onTap: () {},
+                ),
+                SettingRowWidget(
+                  svg: 'assets/svgs/settings/set-passcode.svg',
+                  title: 'Set Passcode',
+                  onTap: () {},
+                ),
+                SettingRowWidget(
+                  svg: 'assets/svgs/settings/disable-passcode.svg',
+                  title: 'Disable Passcode',
+                  onTap: () {},
+                  unable: false,
+                ),
+                getVerticalSpace(7.h),
+                Text(
+                  'Daily Reminders',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.px,
+                    fontFamily: 'Bold',
+                    color: AppColors.blackColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                getVerticalSpace(2.h),
+                Row(
+                  children: [
+                    SvgPicture.asset('assets/svgs/settings/bell-icon.svg'),
+                    getHorizentalSpace(4.px),
+                    Text(
+                      'Enable Reminders',
+                      style: TextStyle(
+                        fontSize: 12.px,
+                        fontFamily: 'regular',
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Spacer(),
+                    Obx(
+                      () => SizedBox(
+                        height: 10,
+                        child: Transform.scale(
+                          scale: 0.6,
+                          child: CupertinoSwitch(
+                            thumbColor: AppColors.blackColor,
+                            onLabelColor: Colors.grey,
+                            value: reminderSwitchValue.value,
+                            onChanged: (value) {
+                              reminderSwitchValue.value = value;
+                            },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              getVerticalSpace(3.h),
-              Text(
-                'Theme',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.px,
-                  fontFamily: 'Bold',
-                  color: AppColors.blackColor,
-                  fontWeight: FontWeight.w600,
+                  ],
                 ),
-              ),
-              getVerticalSpace(2.h),
-              Row(
-                children: [
-                  SvgPicture.asset('assets/svgs/settings/dark-theme.svg'),
-                  getHorizentalSpace(4.px),
-                  Text(
-                    'Dark mode',
-                    style: TextStyle(
-                      fontSize: 12.px,
-                      fontFamily: 'regular',
-                      color: AppColors.blackColor,
-                      fontWeight: FontWeight.w400,
-                    ),
+                getVerticalSpace(3.h),
+                Text(
+                  'Theme',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.px,
+                    fontFamily: 'Bold',
+                    color: AppColors.blackColor,
+                    fontWeight: FontWeight.w600,
                   ),
-                  Spacer(),
-                  Obx(
-                    () => SizedBox(
-                      height: 10,
-                      child: Transform.scale(
-                        scale: 0.6,
-                        child: CupertinoSwitch(
-                          thumbColor: AppColors.blackColor,
-                          onLabelColor: Colors.grey,
-                          value: darkMoodSwitchValue.value,
-                          onChanged: (value) {
-                            darkMoodSwitchValue.value = value;
-                          },
+                ),
+                getVerticalSpace(2.h),
+                Row(
+                  children: [
+                    SvgPicture.asset('assets/svgs/settings/dark-theme.svg'),
+                    getHorizentalSpace(4.px),
+                    Text(
+                      'Dark mode',
+                      style: TextStyle(
+                        fontSize: 12.px,
+                        fontFamily: 'regular',
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Spacer(),
+                    Obx(
+                      () => SizedBox(
+                        height: 10,
+                        child: Transform.scale(
+                          scale: 0.6,
+                          child: CupertinoSwitch(
+                            thumbColor: AppColors.blackColor,
+                            onLabelColor: Colors.grey,
+                            value: darkMoodSwitchValue.value,
+                            onChanged: (value) {
+                              darkMoodSwitchValue.value = value;
+                            },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

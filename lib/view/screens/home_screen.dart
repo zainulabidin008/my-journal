@@ -22,7 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // late final GetAllApis getAllPostsController;
   final AudioPlayer audioPlayer = AudioPlayer();
   final RxBool isPlaying = false.obs;
   final Rx<Duration> duration = Duration.zero.obs;
@@ -43,12 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     isPlaying.value = !isPlaying.value;
   }
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  // }
 
   @override
   void dispose() {
@@ -92,452 +85,458 @@ class _HomeScreenState extends State<HomeScreen> {
             ? AppColors.primaryColor
             : AppColors.blackColor,
         body: SafeArea(
-          child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 2.h),
-              child: Obx(() {
-                if (getAllPostsController.loading.value) {
-                  return Center(
-                    child: LoadingAnimationWidget.prograssiveDots(
-                        color: AppColors.blackColor, size: 10.h),
-                  );
-                }
-                if (getAllPostsController.getAllPost.value == null ||
-                    getAllPostsController.getAllPost.value!.data.isEmpty) {
-                  return Center(
-                    child: Text(
-                      "No data available",
-                      style: TextStyle(color: AppColors.whiteColor),
-                    ),
-                  );
-                }
-                return Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            formattedDate,
-                            style: TextStyle(
-                              fontSize: 16.px,
-                              fontFamily: 'regular',
-                              color: AppColors.whiteColor,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
+          child: Obx(() {
+            if (getAllPostsController.loading.value) {
+              return Center(
+                child: LoadingAnimationWidget.prograssiveDots(
+                  color: AppColors.blackColor,
+                  size: 10.h,
+                ),
+              );
+            }
+            if (getAllPostsController.getAllPost.value == null ||
+                getAllPostsController.getAllPost.value!.data.isEmpty) {
+              return Container(
+                height: Get.height,
+                width: Get.width,
+                color: AppColors.primaryColor,
+                child: Center(
+                  child: Text(
+                    "No data available",
+                    style: TextStyle(color: AppColors.blackColor),
+                  ),
+                ),
+              );
+            }
+            return Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        formattedDate,
+                        style: TextStyle(
+                          fontSize: 16.px,
+                          fontFamily: 'regular',
+                          color: AppColors.whiteColor,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Hey ${getAllPostsController.name.value}!',
-                            style: TextStyle(
-                              fontSize: 20.px,
-                              fontFamily: 'Bold',
-                              color: AppColors.whiteColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hey ${getAllPostsController.name.value}!',
+                        style: TextStyle(
+                          fontSize: 20.px,
+                          fontFamily: 'Bold',
+                          color: AppColors.whiteColor,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    getVerticalSpace(2.h),
-                    SizedBox(
-                      height: 110,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount:
-                            getAllPostsController.getAllPost.value?.data.length,
-                        physics: ScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          Datum datum = getAllPostsController
-                              .getAllPost.value!.data[index];
-                          DateTime createdAt =
-                              DateTime.parse(datum.createdAt.toIso8601String());
-                          String dayOfWeek = DateFormat('E').format(createdAt);
-                          String dayOfMonth = DateFormat('d').format(createdAt);
-                          void scrollToIndex(int index) {
-                            _secondListController.animateTo(
-                              index *
-                                  790.0, // Adjust as needed based on item height
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.ease,
-                            );
-                          }
+                    ],
+                  ),
+                ),
+                getVerticalSpace(2.h),
+                SizedBox(
+                  height: 110,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount:
+                        getAllPostsController.getAllPost.value?.data.length,
+                    physics: ScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      Datum datum =
+                          getAllPostsController.getAllPost.value!.data[index];
+                      DateTime createdAt =
+                          DateTime.parse(datum.createdAt.toIso8601String());
+                      String dayOfWeek = DateFormat('E').format(createdAt);
+                      String dayOfMonth = DateFormat('d').format(createdAt);
+                      void scrollToIndex(int index) {
+                        _secondListController.animateTo(
+                          index *
+                              790.0, // Adjust as needed based on item height
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.ease,
+                        );
+                      }
 
-                          if (getAllPostsController.getAllPost.value == null) {
-                            return Center(
-                              child: Text("No data available"),
-                            );
-                          }
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 1.h),
-                            child: Obx(
-                              () => GestureDetector(
-                                onTap: () {
-                                  scrollToIndex(index);
-                                  isSelected.value = index;
-                                },
-                                child: Container(
-                                  height: 104.px,
-                                  // width: 64,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3.h),
-                                    color: isSelected.value == index
-                                        ? AppColors.primaryColor
-                                        : AppColors.whiteColor,
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 1.5.h),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          dayOfWeek,
-                                          style: AppTextStyles.subtitleGrey,
-                                        ),
-                                        Text(
-                                          dayOfMonth,
-                                          style: AppTextStyles.heading1,
-                                        ),
-                                        getVerticalSpace(1.h),
-                                        Image.network(
-                                          datum.mood.path,
-                                          height: 35,
-                                          width: 35,
-                                        ),
-                                      ],
+                      if (getAllPostsController.getAllPost.value == null) {
+                        return Center(
+                          child: Text("No data available"),
+                        );
+                      }
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 1.h),
+                        child: Obx(
+                          () => GestureDetector(
+                            onTap: () {
+                              scrollToIndex(index);
+                              isSelected.value = index;
+                            },
+                            child: Container(
+                              height: 104.px,
+                              // width: 64,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3.h),
+                                color: isSelected.value == index
+                                    ? AppColors.primaryColor
+                                    : AppColors.whiteColor,
+                              ),
+                              child: Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 1.5.h),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      dayOfWeek,
+                                      style: AppTextStyles.subtitleGrey,
                                     ),
-                                  ),
+                                    Text(
+                                      dayOfMonth,
+                                      style: AppTextStyles.heading1,
+                                    ),
+                                    getVerticalSpace(1.h),
+                                    Image.network(
+                                      datum.mood.path,
+                                      height: 35,
+                                      width: 35,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                    getVerticalSpace(3.h),
-                    Expanded(
-                      child: Container(
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(32.px),
-                            topLeft: Radius.circular(32.px),
                           ),
-                          color: AppColors.primaryColor,
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.all(2.h),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.px),
-                              color: AppColors.whiteColor,
-                            ),
-                            child: ListView.builder(
-                              // itemCount: 1,
-                              itemCount: getAllPostsController
-                                  .getAllPost.value?.data.length,
-                              shrinkWrap: true,
-                              controller: _secondListController,
-                              itemBuilder: (context, index) {
-                                Datum datum = getAllPostsController
-                                    .getAllPost.value!.data[index];
-                                log('length 1: ${getAllPostsController.getAllPost.value?.data.length}');
-                                return Padding(
-                                  padding: EdgeInsets.all(2.h),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                      );
+                    },
+                  ),
+                ),
+                getVerticalSpace(3.h),
+                Expanded(
+                  child: Container(
+                    width: Get.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(32.px),
+                        topLeft: Radius.circular(32.px),
+                      ),
+                      color: AppColors.primaryColor,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(2.h),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 0.7.px, color: AppColors.whiteColor),
+                          image: DecorationImage(
+                            image:
+                                AssetImage('assets/pngs/background_image.jpeg'),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(16.px),
+                          color: AppColors.whiteColor,
+                        ),
+                        child: ListView.builder(
+                          // itemCount: 1,
+                          itemCount: getAllPostsController
+                              .getAllPost.value?.data.length,
+                          shrinkWrap: true,
+                          controller: _secondListController,
+                          itemBuilder: (context, index) {
+                            Datum datum = getAllPostsController
+                                .getAllPost.value!.data[index];
+                            log('length 1: ${getAllPostsController.getAllPost.value?.data.length}');
+                            return Padding(
+                              padding: EdgeInsets.all(2.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'your mood',
+                                    style: TextStyle(
+                                      fontSize: 12.px,
+                                      fontFamily: 'medium',
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  getVerticalSpace(1.h),
+                                  Row(
                                     children: [
+                                      SizedBox(
+                                          height: 28.px,
+                                          width: 28.px,
+                                          child:
+                                              Image.network(datum.mood.path)),
+                                      getHorizentalSpace(1.h),
                                       Text(
-                                        'your mood',
+                                        datum.mood.title,
                                         style: TextStyle(
-                                          fontSize: 12.px,
+                                          fontSize: 10.px,
                                           fontFamily: 'medium',
                                           color: AppColors.blackColor,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      getVerticalSpace(1.h),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              height: 28.px,
-                                              width: 28.px,
-                                              child: Image.network(
-                                                  datum.mood.path)),
-                                          getHorizentalSpace(1.h),
-                                          Text(
-                                            datum.mood.title,
-                                            style: TextStyle(
-                                              fontSize: 10.px,
-                                              fontFamily: 'medium',
-                                              color: AppColors.blackColor,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          Text(
-                                            '12:47 PM',
-                                            style: TextStyle(
-                                              fontSize: 10.px,
-                                              fontFamily: 'medium',
-                                              color: Color(0xff505050),
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      getVerticalSpace(1.5.h),
-                                      Divider(),
-                                      getVerticalSpace(1.5.h),
+                                      Spacer(),
                                       Text(
-                                        'Your Activates',
+                                        '12:47 PM',
                                         style: TextStyle(
-                                          fontSize: 12.px,
+                                          fontSize: 10.px,
                                           fontFamily: 'medium',
-                                          color: AppColors.blackColor,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      getVerticalSpace(1.h),
-                                      GridView.builder(
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: datum.activities.length,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 5,
-                                          crossAxisSpacing: 5.0,
-                                          mainAxisSpacing: 0.0,
-                                          childAspectRatio: 2 / 3,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.px),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                // SvgPicture.asset(
-                                                //     eveningBad[index]),
-                                                Image.network(datum
-                                                    .activities[index].path),
-                                                getVerticalSpace(1.h),
-                                                Text(
-                                                  datum.activities[index].title,
-                                                  style: TextStyle(
-                                                    fontSize: 9.px,
-                                                    fontFamily: 'regular',
-                                                    color: AppColors.blackColor,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      getVerticalSpace(1.5.h),
-                                      Divider(),
-                                      getVerticalSpace(1.5.h),
-                                      Text(
-                                        'Your Feelings',
-                                        style: TextStyle(
-                                          fontSize: 12.px,
-                                          fontFamily: 'medium',
-                                          color: AppColors.blackColor,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      getVerticalSpace(1.h),
-                                      GridView.builder(
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: datum.feelings.length,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 4,
-                                          crossAxisSpacing: 5.0,
-                                          mainAxisSpacing: 0.0,
-                                          childAspectRatio: 6 / 7,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.px),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Image.network(
-                                                  datum.feelings[index].path,
-                                                  height: 6.h,
-                                                  width: 6.h,
-                                                ),
-                                                getVerticalSpace(1.h),
-                                                Text(
-                                                  datum.feelings[index].title,
-                                                  style: TextStyle(
-                                                    fontSize: 9.px,
-                                                    fontFamily: 'regular',
-                                                    color: AppColors.blackColor,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      getVerticalSpace(0.5.h),
-                                      Divider(),
-                                      getVerticalSpace(1.5.h),
-                                      Text(
-                                        'Voice memo',
-                                        style: TextStyle(
-                                          fontSize: 12.px,
-                                          fontFamily: 'medium',
-                                          color: AppColors.blackColor,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      getVerticalSpace(1.h),
-                                      Obx(() {
-                                        String formatDuration(Duration d) {
-                                          String twoDigits(int n) =>
-                                              n.toString().padLeft(2, '0');
-                                          final minutes = twoDigits(
-                                              d.inMinutes.remainder(60));
-                                          final seconds = twoDigits(
-                                              d.inSeconds.remainder(60));
-                                          return '$minutes:$seconds';
-                                        }
-
-                                        return Container(
-                                          height: 40.px,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(40.px),
-                                            color: Color(0xffF5F5F5),
-                                          ),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(6.px),
-                                            child: Row(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () => playPauseAudio(
-                                                      datum.note.path),
-                                                  child: CircleAvatar(
-                                                    radius: 18,
-                                                    backgroundColor:
-                                                        Color(0xff0E9AFF),
-                                                    child: Center(
-                                                      child: isPlaying.value
-                                                          ? Icon(Icons.pause,
-                                                              size: 20,
-                                                              color:
-                                                                  Colors.white)
-                                                          : Icon(
-                                                              Icons.play_arrow,
-                                                              size: 20,
-                                                              color:
-                                                                  Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SvgPicture.asset(
-                                                    'assets/svgs/waves.svg'),
-                                                Spacer(),
-                                                Obx(() => Text(
-                                                      formatDuration(position
-                                                          .value), // Update position.value here
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontFamily: 'regular',
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    )),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                      getVerticalSpace(1.5.h),
-                                      Divider(),
-                                      getVerticalSpace(1.5.h),
-                                      Text(
-                                        'Goals for tomorrow',
-                                        style: TextStyle(
-                                          fontSize: 12.px,
-                                          fontFamily: 'medium',
-                                          color: AppColors.blackColor,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      getVerticalSpace(1.h),
-                                      Text(
-                                        datum.tomorrowDescription,
-                                        style: TextStyle(
-                                          fontSize: 12.px,
-                                          fontFamily: 'regular',
-                                          color: AppColors.blackColor,
+                                          color: Color(0xff505050),
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                      Divider(),
-                                      getVerticalSpace(1.5.h),
-                                      Text(
-                                        'Day Description',
-                                        style: TextStyle(
-                                          fontSize: 12.px,
-                                          fontFamily: 'medium',
-                                          color: AppColors.blackColor,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      getVerticalSpace(1.h),
-                                      Text(
-                                        datum.dayDescription,
-                                        style: TextStyle(
-                                          fontSize: 12.px,
-                                          fontFamily: 'regular',
-                                          color: AppColors.blackColor,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      index ==
-                                              getAllPostsController.getAllPost
-                                                      .value!.data.length -
-                                                  1
-                                          ? getVerticalSpace(8.h)
-                                          : SizedBox.shrink(),
                                     ],
                                   ),
-                                );
-                              },
-                            ),
-                          ),
+                                  getVerticalSpace(1.5.h),
+                                  Divider(),
+                                  getVerticalSpace(1.5.h),
+                                  Text(
+                                    'Your Activates',
+                                    style: TextStyle(
+                                      fontSize: 12.px,
+                                      fontFamily: 'medium',
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  getVerticalSpace(1.h),
+                                  GridView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: datum.activities.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 5,
+                                      crossAxisSpacing: 5.0,
+                                      mainAxisSpacing: 0.0,
+                                      childAspectRatio: 2 / 3,
+                                    ),
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.px),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            // SvgPicture.asset(
+                                            //     eveningBad[index]),
+                                            Image.network(
+                                                datum.activities[index].path),
+                                            getVerticalSpace(1.h),
+                                            Text(
+                                              datum.activities[index].title,
+                                              style: TextStyle(
+                                                fontSize: 9.px,
+                                                fontFamily: 'regular',
+                                                color: AppColors.blackColor,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  getVerticalSpace(1.5.h),
+                                  Divider(),
+                                  getVerticalSpace(1.5.h),
+                                  Text(
+                                    'Your Feelings',
+                                    style: TextStyle(
+                                      fontSize: 12.px,
+                                      fontFamily: 'medium',
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  getVerticalSpace(1.h),
+                                  GridView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: datum.feelings.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      crossAxisSpacing: 5.0,
+                                      mainAxisSpacing: 0.0,
+                                      childAspectRatio: 6 / 7,
+                                    ),
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.px),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Image.network(
+                                              datum.feelings[index].path,
+                                              height: 6.h,
+                                              width: 6.h,
+                                            ),
+                                            getVerticalSpace(1.h),
+                                            Text(
+                                              datum.feelings[index].title,
+                                              style: TextStyle(
+                                                fontSize: 9.px,
+                                                fontFamily: 'regular',
+                                                color: AppColors.blackColor,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  getVerticalSpace(0.5.h),
+                                  Divider(),
+                                  getVerticalSpace(1.5.h),
+                                  Text(
+                                    'Voice memo',
+                                    style: TextStyle(
+                                      fontSize: 12.px,
+                                      fontFamily: 'medium',
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  getVerticalSpace(1.h),
+                                  Obx(() {
+                                    String formatDuration(Duration d) {
+                                      String twoDigits(int n) =>
+                                          n.toString().padLeft(2, '0');
+                                      final minutes =
+                                          twoDigits(d.inMinutes.remainder(60));
+                                      final seconds =
+                                          twoDigits(d.inSeconds.remainder(60));
+                                      return '$minutes:$seconds';
+                                    }
+
+                                    return Container(
+                                      height: 40.px,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(40.px),
+                                        color: Color(0xffF5F5F5),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(6.px),
+                                        child: Row(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () => playPauseAudio(
+                                                  datum.note.path),
+                                              child: CircleAvatar(
+                                                radius: 18,
+                                                backgroundColor:
+                                                    Color(0xff0E9AFF),
+                                                child: Center(
+                                                  child: isPlaying.value
+                                                      ? Icon(Icons.pause,
+                                                          size: 20,
+                                                          color: Colors.white)
+                                                      : Icon(Icons.play_arrow,
+                                                          size: 20,
+                                                          color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                            SvgPicture.asset(
+                                                'assets/svgs/waves.svg'),
+                                            Spacer(),
+                                            Obx(() => Text(
+                                                  formatDuration(position
+                                                      .value), // Update position.value here
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontFamily: 'regular',
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                  getVerticalSpace(1.5.h),
+                                  Divider(),
+                                  getVerticalSpace(1.5.h),
+                                  Text(
+                                    'Goals for tomorrow',
+                                    style: TextStyle(
+                                      fontSize: 12.px,
+                                      fontFamily: 'medium',
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  getVerticalSpace(1.h),
+                                  Text(
+                                    datum.tomorrowDescription,
+                                    style: TextStyle(
+                                      fontSize: 12.px,
+                                      fontFamily: 'regular',
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Divider(),
+                                  getVerticalSpace(1.5.h),
+                                  Text(
+                                    'Day Description',
+                                    style: TextStyle(
+                                      fontSize: 12.px,
+                                      fontFamily: 'medium',
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  getVerticalSpace(1.h),
+                                  Text(
+                                    datum.dayDescription,
+                                    style: TextStyle(
+                                      fontSize: 12.px,
+                                      fontFamily: 'regular',
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  index ==
+                                          getAllPostsController.getAllPost
+                                                  .value!.data.length -
+                                              1
+                                      ? getVerticalSpace(8.h)
+                                      : SizedBox.shrink(),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                  ],
-                );
-              })),
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
         floatingActionButton: Stack(
           children: [

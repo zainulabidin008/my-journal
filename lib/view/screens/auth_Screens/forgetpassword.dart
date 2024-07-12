@@ -32,72 +32,83 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 4.h),
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            getVerticalSpace(12.5.h),
-            Text(
-              'Reset Your Password',
-              style: AppTextStyles.boldStyle
-                  .copyWith(fontSize: 20.px, color: const Color(0xff000000)),
-            ),
-            getVerticalSpace(.8.h),
-            Text(
-              "Enter your email and we'll send you a link to reset \nyour password.",
-              style: AppTextStyles.simpleSmallText.copyWith(
-                fontSize: 14.px,
-                color: const Color(0xff2D3748),
+        height: Get.height,
+        width: Get.width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/pngs/background_image.jpeg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 4.h),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              getVerticalSpace(12.5.h),
+              Text(
+                'Reset Your Password',
+                style: AppTextStyles.boldStyle
+                    .copyWith(fontSize: 20.px, color: const Color(0xff000000)),
               ),
-              textAlign: TextAlign.center,
-            ),
-            getVerticalSpace(7.4.h),
-            customTextFormField(emailController, 'Email',
-                prefixIcon: SvgPicture.asset('assets/svgs/emailicon.svg'),
-                isObscure: false,
-                svg: SvgPicture.asset('assets/svgs/lineicon.svg')),
-            getVerticalSpace(4.6.h),
-            Obx(
-              () => forgotController.resendIsLoading.value
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.blackColor,
-                      ),
-                    )
-                  : customButton(
-                      horizentalPadding: 7.7.h,
-                      verticalPadding: .8.h,
-                      title: "Next",
-                      onTap: () {
-                        String error = Validations.resetPasswordHandleError(
-                            emailController: emailController);
-                        if (error.isNotEmpty) {
-                          customScaffoldMessenger(
-                              context,
-                              Validations.resetPasswordHandleError(
-                                  emailController: emailController));
-                        } else {
-                          forgotController
-                              .forgotPassword(emailController.text.trim());
-                        }
-                      }),
-            ),
-            getVerticalSpace(1.3.h),
-            GestureDetector(
-              onTap: () {
-                Get.to(() => const LoginScreen());
-              },
-              child: Text(
-                'Sign-In',
+              getVerticalSpace(.8.h),
+              Text(
+                "Enter your email and we'll send you a link to reset \nyour password.",
                 style: AppTextStyles.simpleSmallText.copyWith(
-                    fontSize: 12.px,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xff272828)),
+                  fontSize: 14.px,
+                  color: const Color(0xff2D3748),
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-          ],
+              getVerticalSpace(7.4.h),
+              customTextFormField(emailController, 'Email',
+                  prefixIcon: SvgPicture.asset('assets/svgs/emailicon.svg'),
+                  isObscure: false,
+                  svg: SvgPicture.asset('assets/svgs/lineicon.svg')),
+              getVerticalSpace(4.6.h),
+              Obx(
+                () => forgotController.resendIsLoading.value
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.blackColor,
+                        ),
+                      )
+                    : customButton(
+                        horizentalPadding: 7.7.h,
+                        verticalPadding: .8.h,
+                        title: "Next",
+                        onTap: () {
+                          String error = Validations.resetPasswordHandleError(
+                              emailController: emailController);
+                          if (error.isNotEmpty) {
+                            customScaffoldMessenger(
+                                context,
+                                Validations.resetPasswordHandleError(
+                                    emailController: emailController));
+                          } else {
+                            forgotController
+                                .forgotPassword(emailController.text.trim());
+                          }
+                        }),
+              ),
+              getVerticalSpace(1.3.h),
+              GestureDetector(
+                onTap: () {
+                  Get.to(() => const LoginScreen());
+                },
+                child: Text(
+                  'Sign-In',
+                  style: AppTextStyles.simpleSmallText.copyWith(
+                      fontSize: 12.px,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff272828)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
