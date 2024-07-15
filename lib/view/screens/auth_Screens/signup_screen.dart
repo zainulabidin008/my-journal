@@ -30,9 +30,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  // TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  // TextEditingController confirmPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -84,7 +84,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             getVerticalSpace(2.h),
                             customTextFormField(
-                              emailController,
+                              signUpController.emailController,
                               'Email',
                               prefixIcon:
                                   SvgPicture.asset('assets/svgs/emailicon.svg'),
@@ -102,7 +102,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             getVerticalSpace(2.h),
                             customTextFormField(
-                              confirmPasswordController,
+                              signUpController.confirmPasswordController,
                               'Confirmed Password',
                               prefixIcon: SvgPicture.asset(
                                   'assets/svgs/passwordicon.svg'),
@@ -127,15 +127,18 @@ class _SignupScreenState extends State<SignupScreen> {
                                                   firstNameController,
                                               lastNameController:
                                                   lastNameController,
-                                              emailController: emailController,
+                                              emailController: signUpController
+                                                  .emailController,
                                               passwordController:
                                                   passwordController,
                                               confirmPasswordController:
-                                                  confirmPasswordController);
+                                                  signUpController
+                                                      .confirmPasswordController);
                                       if (error.isEmpty) {
                                         signUpController.signUp(
-                                          '${firstNameController.text.trim() + lastNameController.text.trim()}',
-                                          emailController.text.trim(),
+                                          '${firstNameController.text} ${lastNameController.text}',
+                                          signUpController.emailController.text
+                                              .trim(),
                                           passwordController.text.trim(),
                                         );
                                       } else {

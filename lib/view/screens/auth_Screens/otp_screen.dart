@@ -12,9 +12,7 @@ import 'createNew_Password.dart';
 class OtpScreen extends StatefulWidget {
   final String email;
   final String type;
-  final String? password;
-  const OtpScreen(
-      {super.key, required this.email, required this.type, this.password});
+  const OtpScreen({super.key, required this.email, required this.type});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -37,7 +35,6 @@ class _OtpScreenState extends State<OtpScreen> {
     // Provide a default value if Get.arguments is null
     final arguments = Get.arguments ?? {};
     final userEmail = arguments['userEmail'] ?? widget.email;
-    final userPassword = arguments['userPassword'] ?? widget.password;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -108,7 +105,9 @@ class _OtpScreenState extends State<OtpScreen> {
                           if (otp.length == 4) {
                             if (widget.type.toString() == "email") {
                               controller.verifyEmailOtp(
-                                  otp, widget.type, userEmail, userPassword);
+                                otp,
+                                widget.type,
+                              );
                             } else {
                               controller.verifyPasswordOtp(otp, widget.type);
                             }

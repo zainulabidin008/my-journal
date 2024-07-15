@@ -16,21 +16,40 @@ class AuthController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool resendIsLoading = false.obs;
   RxString otp = "".obs;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  RxString email = ''.obs;
+  RxString confirmPassword = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Update RxString values when TextEditingController changes
+    emailController.addListener(() {
+      email.value = emailController.text;
+    });
+    confirmPasswordController.addListener(() {
+      confirmPassword.value = confirmPasswordController.text;
+    });
+  }
+
+  @override
+  void onClose() {
+    // Dispose controllers when not needed
+    emailController.dispose();
+    confirmPasswordController.dispose();
+    super.onClose();
+  }
 
   //login
-  Future<void> login(String? email, String? password) async {
+  Future<void> login(String email, password) async {
     isLoading.value = true;
     try {
-      if (email == null || password == null) {
-        customScaffoldMessenger(context, 'Email and password cannot be null');
-        return;
-      }
-
-      final bool isLoginSuccessful =
-          await AuthApis(context).loginApi(email, password);
-      if (isLoginSuccessful) {}
+      await AuthApis(context).loginApi(email, password);
     } catch (e) {
-      log("Error occurred: $e");
+      log("Error occurred:$e");
     } finally {
       isLoading.value = false;
     }
@@ -62,28 +81,13 @@ class AuthController extends GetxController {
   }
 
   // verifyEmailOtp
-  Future<void> verifyEmailOtp(
-      String? userOtp, String type, String? email, String? password) async {
+  Future<void> verifyEmailOtp(String userOtp, String type) async {
     isLoading.value = true;
     try {
-      if (userOtp == null || userOtp.isEmpty) {
-        customScaffoldMessenger(context, 'OTP cannot be empty');
-        return;
-      }
-
-      final bool isOtpVerified =
-          await AuthApis(context).emailVerifyOtpApi(userOtp, type);
-      if (isOtpVerified) {
-        // If OTP verification is successful, call the login method only if email and password are provided
-        if (email != null && password != null) {
-          await login(email, password);
-        } else {
-          customScaffoldMessenger(
-              context, 'Email and password cannot be null for login');
-        }
-      }
+      await AuthApis(context).emailVerifyOtpApi(userOtp, userId);
     } catch (e) {
-      log("Error occurred: $e");
+      isLoading.value = false;
+      log("Error occurred:$e");
     } finally {
       isLoading.value = false;
     }

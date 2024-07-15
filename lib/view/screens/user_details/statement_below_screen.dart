@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:my_journel/controllers/getx_controller/auth_controller.dart';
 import 'package:my_journel/controllers/utils/app_colors.dart';
 import 'package:my_journel/controllers/utils/app_styles.dart';
 import 'package:my_journel/view/screens/auth_Screens/login_screen.dart';
@@ -21,6 +24,9 @@ class StatementBelowScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserDetailController userDetailController =
         Get.put(UserDetailController(context));
+    final AuthController authController = Get.put(AuthController(context));
+    log('email: ${authController.email.value}');
+    log('password: ${authController.confirmPassword.value}');
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 2.h),

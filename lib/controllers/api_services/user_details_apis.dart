@@ -12,13 +12,22 @@ import '../../model/elevates_model.dart';
 import '../../model/goals_model.dart';
 import '../../model/motivation_model.dart';
 import '../../view/screens/auth_Screens/login_screen.dart';
+import '../getx_controller/auth_controller.dart';
 import 'base_url.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
 class UserDetail {
   final BuildContext context;
-  UserDetail(this.context);
+  late final AuthController authController;
+
+  UserDetail(this.context) {
+    _initAuthController();
+  }
+
+  void _initAuthController() {
+    authController = Get.put(AuthController(context));
+  }
 
   Future<Temperatures?> userGoals() async {
     final uri = Uri.parse("${BaseUrl.url}/goals/getAll");
@@ -110,7 +119,9 @@ class UserDetail {
           responseData['message'] == "Successfully, Update User") {
         // final prefs = await SharedPreferences.getInstance();
         MySharedPreferences.setBool('userData', true);
-        Get.off(() => MyBottomBar());
+        // Get.off(() => LoginScreen());
+        await authController.login(
+            authController.email.value, authController.confirmPassword.value);
         print('User details updated successfully');
         customScaffoldMessenger(context, "your Data is Updated");
       } else {

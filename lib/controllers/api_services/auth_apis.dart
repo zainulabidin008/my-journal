@@ -21,31 +21,27 @@ class AuthApis {
   AuthApis(this.context);
 
   // login Api
-  Future<bool> loginApi(String email, password) async {
+  Future<void> loginApi(String email, password) async {
     final url = Uri.parse("${BaseUrl.url}/user/auth/login");
     final headers = {"Content-Type": "application/json"};
     final body = jsonEncode({
       "email": email,
       "password": password,
     });
-
     Response response = await post(url, headers: headers, body: body);
     final responseBody = jsonDecode(response.body);
-
     if (responseBody["result"] == true) {
       MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
       log("Login Api Successfully");
-      // customScaffoldMessenger(context, 'Successfully Login');
-      return true; // Login successful
+      customScaffoldMessenger(context, 'Successfully Login');
+      Get.off(() => MyBottomBar());
     } else if (responseBody["result"] ==
         "User already registered against this email.") {
       customScaffoldMessenger(context, 'text');
-      return false; // Login failed
     } else {
       log("login api failed");
       log(responseBody["message"]);
       customScaffoldMessenger(context, responseBody["message"]);
-      return false; // Login failed
     }
   }
 
@@ -64,11 +60,11 @@ class AuthApis {
       log("signUp Api register Successfully");
       customScaffoldMessenger(context, 'Successfully SignUp');
       emailVerifyApi(userEmail);
+      // MySharedPreferences.setString(userIdKey, responseBody["data"]["_id"]);
       Get.to(
         () => OtpScreen(
           email: userEmail,
           type: 'email',
-          password: userPassword,
         ),
       );
     } else {
@@ -103,9 +99,10 @@ class AuthApis {
   }
 
   // email verify Otp api
-  Future<bool> emailVerifyOtpApi(String userOtp, String type) async {
+  Future<void> emailVerifyOtpApi(String userOtp, String type) async {
     final url = Uri.parse("${BaseUrl.url}/user/auth/verifyEmailOtp");
     final headers = {"Content-Type": "application/json"};
+    print("User Id$userId");
     final body = jsonEncode({
       "otp": userOtp,
       "id": MySharedPreferences.getString(userIdKey),
@@ -113,27 +110,23 @@ class AuthApis {
 
     Response response = await post(url, headers: headers, body: body);
     final responseBody = jsonDecode(response.body);
-
     if (responseBody["result"] == true) {
-      log("Otp Verify Successfully");
-
-      if (type == "forgot" || type == "email") {
+      if (type == "forgot") {
+        Get.to(() => const CreateNewPassword());
+      } else if (type == "email") {
         Get.to(() => const CreateNewPassword());
       }
-
+      log("Otp Verify Successfully");
       if (MySharedPreferences.getBool('userData') == true) {
-        Get.off(() => ProgressBarScreen());
+        Get.off(() => LoginScreen());
       } else {
         Get.off(() => const ProgressBarScreen());
       }
-
       customScaffoldMessenger(context, 'Otp Verified Successfully');
-      return true; // OTP verification successful
     } else {
       log("Incorrect Otp");
       log(responseBody["message"]);
       customScaffoldMessenger(context, responseBody["message"]);
-      return false; // OTP verification failed
     }
   }
 

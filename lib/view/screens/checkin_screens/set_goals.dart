@@ -9,9 +9,11 @@ import 'package:my_journel/controllers/utils/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../controllers/api_services/base_url.dart';
+import '../../../controllers/getx_controller/getallapis_controller.dart';
 import '../../../controllers/utils/app_colors.dart';
 import '../../../controllers/utils/app_styles.dart';
 import '../../../custom_widgets/ui_components.dart';
+import '../../../model/getallposts_model.dart';
 import 'checkin_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -109,6 +111,18 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
+        final GetAllApis getAllPostsController = Get.put(GetAllApis(context));
+        final data = getAllPostsController.getAllPost.value?.data ?? [];
+
+        String contentText;
+
+        if (data.isNotEmpty) {
+          final int lastIndex = data.length - 1;
+          Datum datum = data[lastIndex];
+          contentText = datum.tomorrowDescription.toString();
+        } else {
+          contentText = 'No Goals';
+        }
         return AlertDialog(
           backgroundColor: AppColors.primaryColor,
           contentPadding:
@@ -147,7 +161,8 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
                 child: Padding(
                   padding: EdgeInsets.all(16.px),
                   child: Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget urna vel felis sollicitudin euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin sit amet nunc quis sapien ultrices facilisis. Integer euismod leo ac urna gravida, sit amet feugiat risus interdum. Morbi a lacus ac purus gravida fermentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam et sem vel mauris pharetra scelerisque. Suspendisse potenti. Cras sagittis, urna in interdum cursus, magna leo convallis metus, id tempus ex lorem eget libero.',
+                    contentText,
+                    // 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget urna vel felis sollicitudin euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin sit amet nunc quis sapien ultrices facilisis. Integer euismod leo ac urna gravida, sit amet feugiat risus interdum. Morbi a lacus ac purus gravida fermentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam et sem vel mauris pharetra scelerisque. Suspendisse potenti. Cras sagittis, urna in interdum cursus, magna leo convallis metus, id tempus ex lorem eget libero.',
                     style: TextStyle(
                       fontSize: 8.px,
                       fontFamily: 'regular',
