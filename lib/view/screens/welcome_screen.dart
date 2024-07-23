@@ -14,39 +14,49 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: Column(
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: SvgPicture.asset(
-              'assets/svgs/welcomeicon.svg',
-              fit: BoxFit.fill,
-            ),
+      // backgroundColor: AppColors.whiteColor,
+      body: Container(
+        height: Get.height,
+        width: Get.width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/pngs/background_image.jpeg'),
+            fit: BoxFit.fill,
           ),
-          // getVerticalSpace(16.8.h),
-          SizedBox(height: 15.h),
-          customButton(
-            title: "Create new account",
-            horizentalPadding: 11.h,
-            onTap: () {
-              Get.offAll(() => SignupScreen());
-            },
-          ),
-          getVerticalSpace(1.4.h),
-          GestureDetector(
-            onTap: () {
-              Get.offAll(() => const LoginScreen());
-            },
-            child: Text(
-              'Already have account?',
-              style: AppTextStyles.simpleSmallText.copyWith(
-                fontSize: 14.px,
-                fontWeight: FontWeight.w600,
+        ),
+        child: Column(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: SvgPicture.asset(
+                'assets/svgs/welcomeicon.svg',
+                fit: BoxFit.fill,
               ),
             ),
-          )
-        ],
+            // getVerticalSpace(16.8.h),
+            SizedBox(height: 15.h),
+            customButton(
+              title: "Create new account",
+              horizentalPadding: 11.h,
+              onTap: () {
+                Get.offAll(() => SignupScreen());
+              },
+            ),
+            getVerticalSpace(1.4.h),
+            GestureDetector(
+              onTap: () {
+                Get.offAll(() => const LoginScreen());
+              },
+              child: Text(
+                'Already have account?',
+                style: AppTextStyles.simpleSmallText.copyWith(
+                  fontSize: 14.px,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

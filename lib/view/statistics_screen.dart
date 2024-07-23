@@ -14,22 +14,36 @@ import '../controllers/getx_controller/getallapis_controller.dart';
 import '../controllers/utils/constants.dart';
 import '../controllers/utils/shared_preferences.dart';
 
-class StatisticsScreen extends StatelessWidget {
+class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final GetAllApis controller = Get.put(GetAllApis(context));
+  State<StatisticsScreen> createState() => _StatisticsScreenState();
+}
+
+class _StatisticsScreenState extends State<StatisticsScreen> {
+  late final GetAllApis controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = Get.put(GetAllApis(context));
     controller.getStatisticsData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     log("user Id: ${MySharedPreferences.getString(userIdKey)}");
     return Obx(() {
       if (controller.statistics.value == null ||
-          controller.statistics.value!.data == null) {
+          controller.statistics.value!.data.streak <= 0) {
         return Center(
-          child: LoadingAnimationWidget.prograssiveDots(
-            color: AppColors.blackColor,
-            size: 10.h,
-          ),
+          child: Text('No Data Found Please add your Goals'),
+          // LoadingAnimationWidget.prograssiveDots(
+          //   color: AppColors.blackColor,
+          //   size: 10.h,
+          // ),
         );
       }
 

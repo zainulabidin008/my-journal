@@ -29,6 +29,7 @@ class SetGoalsScreen extends StatefulWidget {
 
 class _SetGoalsScreenState extends State<SetGoalsScreen> {
   final CheckInBarController controller = Get.put(CheckInBarController());
+  late final GetAllApis getAllPostsController;
   final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   final FlutterSoundPlayer _player = FlutterSoundPlayer();
   RxBool isRecording = false.obs;
@@ -37,6 +38,7 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
   @override
   void initState() {
     super.initState();
+    getAllPostsController = Get.put(GetAllApis(context));
     _initialize();
   }
 
@@ -111,7 +113,7 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        final GetAllApis getAllPostsController = Get.put(GetAllApis(context));
+        // final GetAllApis getAllPostsController = Get.put(GetAllApis(context));
         final data = getAllPostsController.getAllPost.value?.data ?? [];
 
         String contentText;
@@ -193,7 +195,7 @@ class _SetGoalsScreenState extends State<SetGoalsScreen> {
           child: Column(
             children: [
               Text(
-                'Did you achieved your set goals Mohsin?',
+                'Did you achieved your set goals ${getAllPostsController.name}?',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.heading,
               ),

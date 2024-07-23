@@ -23,12 +23,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final AudioPlayer audioPlayer = AudioPlayer();
+  late final GetAllApis getAllPostsController;
   final RxBool isPlaying = false.obs;
   final Rx<Duration> duration = Duration.zero.obs;
   final Rx<Duration> position = Duration.zero.obs;
   String formattedDate = DateFormat('E, MMM d').format(DateTime.now());
   final ScrollController _secondListController = ScrollController();
   RxInt isSelected = 0.obs;
+
   void playPauseAudio(String url) async {
     if (isPlaying.value) {
       await audioPlayer.pause();
@@ -51,11 +53,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getAllPostsController = Get.put(GetAllApis(context));
+    getAllPostsController.getAllPosts().then((_) {
+      var posts = getAllPostsController.getAllPost.value;
+
+      if (posts != null && posts.data.isNotEmpty) {
+        var firstPost = posts.data[0];
+
+        if (firstPost.userId != null) {
+          getAllPostsController.name.value = firstPost.userId.name;
+        }
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final GetAllApis getAllPostsController = Get.put(GetAllApis(context));
-    getAllPostsController.getAllPosts();
     log('formattedDate: $formattedDate');
-    log('name: ${getAllPostsController.name}');
+    log('name: ${getAllPostsController.name.value}');
     audioPlayer.onPlayerComplete.listen((event) {
       isPlaying.value = false;
       position.value = Duration.zero;
@@ -68,16 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
     audioPlayer.onPositionChanged.listen((newPosition) {
       position.value = newPosition;
     });
-
-    var posts = getAllPostsController.getAllPost.value;
-
-    if (posts != null && posts.data.isNotEmpty) {
-      var firstPost = posts.data[0];
-
-      if (firstPost.userId != null) {
-        getAllPostsController.name.value = firstPost.userId.name;
-      }
-    }
 
     return Obx(
       () => Scaffold(
@@ -109,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 3.h),
